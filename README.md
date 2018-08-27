@@ -3,8 +3,10 @@
 The goal of this project is to predict the optimal line up per week for daily
 fantasy football.
 
+## [Technical Report](report.md)
+
 ## To-do
-- [ ] Gather data
-- [ ] Clean data and insert into to Postgres database
+- [x] Gather data
+- [x] Clean data and insert into to Postgres database
 - [ ] Make predictions and test on last season's data
 - [ ] Create interactive web app
