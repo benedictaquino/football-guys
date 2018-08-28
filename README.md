@@ -12,9 +12,10 @@ players.
 - [x] Gather data
 - [x] Clean data and insert into to Postgres database
 - [ ] Implement Mapper algorithm
-- [ ] Create optimization model
-- [ ] Construct base model using traditional clustering algorithms and
-    time series analysis to make predictions
-- [ ] Make predictions and test on last season's data
 - [ ] Visualize the simplicial complex
-- [ ] Create interactive web app
+- [ ] Create interactive visualization
+- [ ] Deploy Flask web app on AWS EC2 instance
+
+## Stretch/Tangential Goals
+- [ ] Use information gained from topological data analysis to develop a model
+      that can be used to optimize daily fantasy lineups
