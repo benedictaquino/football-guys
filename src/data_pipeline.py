@@ -161,6 +161,6 @@ if __name__ == '__main__':
             print('Failed to retrieve fantasy stats for Week {}'.format(i))
         else:
             print('Successfully retrieved fantasy stats for Week {}'.format(i))
-            to_database(stat_df, table_name='stats')
+            to_database(stat_df, table_name='nflfantasy')
 
         
