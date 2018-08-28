@@ -52,6 +52,10 @@ def rotoguru_scrape(week=1, year=2017):
 
     df['name'] = new_names
 
+    # Capitalize positions and teams
+    df['pos'] = df['pos'].map(lambda x: x.upper())
+    df['team'] = df['team'].map(lambda x: x.upper())
+
     return df
 
 def stat_scrape(week=1, year=2017):

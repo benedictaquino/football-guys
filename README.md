@@ -12,6 +12,7 @@ a model thatoptimizes daily fantasy line-ups.
 ## To-do
 - [x] Gather data
 - [x] Clean data and insert into to Postgres database
+- [ ] Create unique id key for players
 - [ ] Implement Mapper algorithm
 - [ ] Create optimization model
 - [ ] Construct base model using traditional clustering algorithms and
