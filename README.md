@@ -4,8 +4,7 @@ The goal of this project is to implement the Mapper algorithm on NFL Fantasy
 Football data in order to visualize and analyze the point cloud data. Ideally, 
 analyzing the simplical complices that result from my implementation of the 
 Mapper algorithm will yield a meaningful and novel way to group together 
-players. Using information gained from topological data analysis, I aim to make 
-a model thatoptimizes daily fantasy line-ups. 
+players.
 
 ## [Technical Report](report.md)
 
