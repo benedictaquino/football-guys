@@ -11,7 +11,11 @@ is the SQL dump file.
 
 ## [Topological Data Analysis](notebooks/TDA.ipynb)
 
-I chose to use the average fantasy points of each player for my initial 
-impementation of the Mapper algorithm. Since fantasy points are essentially a
-linear combination of their performance statistics, I felt it was a good 
-low-dimensional representation of each player. 
+I chose to use the average fantasy points of each player to create my cover of
+the point cloud space. Since fantasy points are essentially a linear combination
+of their performance statistics, I felt it was a good low-dimensional 
+representation of each player that would provide me with a nice cover.
+
+In order to decide how many sets to put in my cover, I inspected dendrograms 
+created from single, ward, and complete linkage hierarchical clustering. I 
+decided that ward clustering would give me the results I wanted. 
