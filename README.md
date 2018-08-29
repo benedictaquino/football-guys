@@ -12,12 +12,13 @@ players.
 - [x] Gather data
 - [x] Clean data and insert into to Postgres database
 - [x] Implement Mapper algorithm to build a simplicial complex
-- [ ] Generalize and optimize code from [notebook](notebooks/TDA.ipynb)
+- [x] Generalize code from [notebook](notebooks/TDA.ipynb)
 - [ ] Visualize the simplicial complices
 - [ ] Analyze barcode diagrams
 - [ ] Create interactive visualization
 - [ ] Deploy Flask web app on AWS EC2 instance
 
 ## Stretch/Tangential Goals
+- [ ] Optimize code
 - [ ] Use information gained from topological data analysis to develop a model
       that can be used to optimize daily fantasy lineups
