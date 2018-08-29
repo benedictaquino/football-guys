@@ -11,8 +11,10 @@ players.
 ## To-do
 - [x] Gather data
 - [x] Clean data and insert into to Postgres database
-- [ ] Implement Mapper algorithm
-- [ ] Visualize the simplicial complex
+- [x] Implement Mapper algorithm to build a simplicial complex
+- [ ] Generalize and optimize code from [notebook](notebooks/TDA.ipynb)
+- [ ] Visualize the simplicial complices
+- [ ] Analyze barcode diagrams
 - [ ] Create interactive visualization
 - [ ] Deploy Flask web app on AWS EC2 instance
 
