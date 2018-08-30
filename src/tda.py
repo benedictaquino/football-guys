@@ -20,8 +20,9 @@ class ClutchMapper:
         '''
         self.data = data
         self.labels = labels
+        self._build_cover()
 
-    def build_cover(self):
+    def _build_cover(self):
         '''
         This method builds a cover for point cloud data made up of sets of 
         overlapping hyperspheres
@@ -34,7 +35,7 @@ class ClutchMapper:
         '''
         self.cover_ = {}
 
-        for label in self.labels:
+        for label in sorted(self.labels):
             ind = np.where(self.labels==label)
             cluster = self.data[ind]
             centroid = self.data[ind].mean(axis=0).reshape(1,-1)
@@ -43,30 +44,31 @@ class ClutchMapper:
 
         return self
 
-    def build_complex(self, p):
+    def build_complex(self, p, k = 3):
         '''
         This function constructs the simplices for a simplicial complex given a 
         cover, data, and a threshold of overlapping points
 
         PARAMETERS
         ----------
-        cover: {dict} a dictionary containing information on the cover consisting of
-                    hyperspheres that cover the point cloud data
-
-        data: {array} the point cloud data
-
         p: {int} the number of observations that must be in the intersection of 
                 hyperspheres to create an edge, face, or tetrahedra
+
+        # TODO: Implement this
+        k: {int} specifify up to which dimension k-simplex to calculate
 
         RETURNS
         -------
         simplices: {list} a list of lists containing the simplices, each simplex is 
                         a list of the vertices that build the simplex.
         '''
-        vertices = list(self.cover_.keys())
-        
-        simplicial_complex = []
 
+        # Vertices are the hyperspheres in our cover
+        vertices = sorted(list(self.cover_.keys()))
+
+        simplicial_complex = [[vertex] for vertex in vertices]
+
+        # Edges
         for i,j in combinations(vertices, 2):
             centroid_i, radius_i = self.cover_[i]
             centroid_j, radius_j = self.cover_[j]
@@ -82,6 +84,7 @@ class ClutchMapper:
             if overlap_count > p:
                 simplicial_complex.append([i,j])
 
+        # Faces
         for i,j,k in combinations(vertices, 3):
             centroid_i, radius_i = self.cover_[i]
             centroid_j, radius_j = self.cover_[j]
@@ -100,6 +103,7 @@ class ClutchMapper:
             if overlap_count > p:
                 simplicial_complex.append([i,j,k])
 
+        # Tetrahedra
         for i,j,k,l in combinations(vertices, 4):
             centroid_i, radius_i = self.cover_[i]
             centroid_j, radius_j = self.cover_[j]
@@ -131,17 +135,9 @@ class ClutchMapper:
         -------
         filtration {dionysus.Filtration} a filtration of simplicial complices
         '''
-        self.build_cover()
-
-        vertices = [[k] for k in self.cover_.keys()]
-        t = 0
         self.filtration_ = d.Filtration()
-
-        for vertex in vertices:
-            self.filtration_.append(d.Simplex(vertex, t))
             
-        for p in range(p,-2,-1):
-            t += 1
+        for t, p in enumerate(range(p,-2,-1)):
             simplicial_complex = self.build_complex(p)
             
             for simplex in simplicial_complex:
