@@ -4,6 +4,10 @@ import dionysus as d
 from itertools import combinations
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.cluster import AgglomerativeClustering
+import plotly.plotly as py
+import plotly.graph_objs as go
+import plotly.figure_factory as FF
+import igraph as ig
 
 class ClutchMapper:
 
@@ -103,7 +107,7 @@ class ClutchMapper:
             if overlap_count > p:
                 simplicial_complex.append([i,j,k])
 
-        # Tetrahedra
+        # # Tetrahedra
         # for i,j,k,l in combinations(vertices, 4):
         #     centroid_i, radius_i = self.cover_[i]
         #     centroid_j, radius_j = self.cover_[j]
@@ -146,3 +150,108 @@ class ClutchMapper:
         self.filtration_.sort()
 
         return self.filtration_
+
+def visualize_complex(simplicial_complex, title=None):
+    '''
+    This function constructs a visualization of the given simplical complex
+
+    PARAMETERS
+    ----------
+    simplicial_complex: {list} a list containing simplices of the complex
+
+    title: {str} title of the plot
+
+    filename: {str} filename of the output plot
+
+    RETURNS
+    -------
+    fig: {plotly.graph_objs.Figure}
+    '''
+
+
+    vertices = np.array([simplex for simplex_list in simplicial_complex for simplex in simplex_list if len(simplex_list) == 1])
+    edges = np.array([simplex for simplex in simplicial_complex if len(simplex) == 2])
+    faces = np.array([simplex for simplex in simplicial_complex if len(simplex) == 3])
+    # tetrahedra = np.array([simplex for simplex in simplicial_complex if len(simplex) == 4])
+
+    g = ig.Graph()
+    n_vertices = len(vertices)
+    g.add_vertices(n_vertices)
+    g.add_edges(edges)
+    layt = g.layout('kk', dim=3)
+
+    x_vertex=[layt[k][0] for k in range(n_vertices)]
+    y_vertex=[layt[k][1] for k in range(n_vertices)]
+    z_vertex=[layt[k][2] for k in range(n_vertices)]
+
+    x_edge = []
+    y_edge = []
+    z_edge = []
+
+    for edge in edges:
+        x_edge += [layt[edge[0]][0], layt[edge[1]][0], None]
+        y_edge += [layt[edge[0]][1], layt[edge[1]][1], None]
+        z_edge += [layt[edge[0]][2], layt[edge[1]][2], None]
+
+    i, j, k = faces.T
+
+    data = [
+        go.Scatter3d(
+            x = x_vertex,
+            y = y_vertex,
+            z = z_vertex,
+            mode = 'markers',
+            name = 'Vertices',
+            marker=dict(symbol='circle',
+                                size=6,
+                                color=vertices,
+                                colorscale='Viridis',
+                                line=dict(color='rgb(50,50,50)', width=0.5)
+                                ),
+                text=vertices,
+                hoverinfo='text'
+        ),
+        go.Scatter3d(
+            x = x_edge,
+            y = y_edge,
+            z = z_edge,
+            mode = 'lines',
+            name = 'Edges'
+        ),
+        go.Mesh3d(
+            x = x_vertex,
+            y = y_vertex,
+            z = z_vertex,
+            i = i,
+            j = j,
+            k = k,
+            opacity = 0.4,
+            name = 'Faces'
+        )
+    ]
+
+    axis=dict(showbackground=False,
+            showline=False,
+            zeroline=False,
+            showgrid=False,
+            showticklabels=False,
+            title=''
+            )
+
+    layout = go.Layout(
+            title=title,
+            width=800,
+            height=600,
+            showlegend=False,
+            scene=dict(
+                xaxis=dict(axis),
+                yaxis=dict(axis),
+                zaxis=dict(axis),
+            ),
+        margin=dict(
+            t=100
+        )
+    )
+    fig = go.Figure(data=data, layout=layout)
+
+    return fig
