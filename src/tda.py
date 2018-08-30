@@ -104,26 +104,26 @@ class ClutchMapper:
                 simplicial_complex.append([i,j,k])
 
         # Tetrahedra
-        for i,j,k,l in combinations(vertices, 4):
-            centroid_i, radius_i = self.cover_[i]
-            centroid_j, radius_j = self.cover_[j]
-            centroid_k, radius_k = self.cover_[k]
-            centroid_l, radius_l = self.cover_[l]
+        # for i,j,k,l in combinations(vertices, 4):
+        #     centroid_i, radius_i = self.cover_[i]
+        #     centroid_j, radius_j = self.cover_[j]
+        #     centroid_k, radius_k = self.cover_[k]
+        #     centroid_l, radius_l = self.cover_[l]
 
-            dist_vec_i = np.linalg.norm(centroid_i - self.data, axis = 1)
-            dist_vec_j = np.linalg.norm(centroid_j - self.data, axis = 1)
-            dist_vec_k = np.linalg.norm(centroid_k - self.data, axis = 1)
-            dist_vec_l = np.linalg.norm(centroid_l - self.data, axis = 1)
+        #     dist_vec_i = np.linalg.norm(centroid_i - self.data, axis = 1)
+        #     dist_vec_j = np.linalg.norm(centroid_j - self.data, axis = 1)
+        #     dist_vec_k = np.linalg.norm(centroid_k - self.data, axis = 1)
+        #     dist_vec_l = np.linalg.norm(centroid_l - self.data, axis = 1)
 
-            overlap_i = (dist_vec_i < radius_i).astype(int)
-            overlap_j = (dist_vec_j < radius_j).astype(int)
-            overlap_k = (dist_vec_k < radius_k).astype(int)
-            overlap_l = (dist_vec_l < radius_l).astype(int)
+        #     overlap_i = (dist_vec_i < radius_i).astype(int)
+        #     overlap_j = (dist_vec_j < radius_j).astype(int)
+        #     overlap_k = (dist_vec_k < radius_k).astype(int)
+        #     overlap_l = (dist_vec_l < radius_l).astype(int)
 
-            overlap_count = (overlap_i + overlap_j + overlap_k + overlap_l == 4).sum()
+        #     overlap_count = (overlap_i + overlap_j + overlap_k + overlap_l == 4).sum()
 
-            if overlap_count > p:
-                simplicial_complex.append([i,j,k,l])
+        #     if overlap_count > p:
+        #         simplicial_complex.append([i,j,k,l])
 
         return simplicial_complex
 
