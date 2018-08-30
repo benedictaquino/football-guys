@@ -11,11 +11,14 @@ import igraph as ig
 
 class ClutchMapper:
 
-    def __init__(self, data, labels):
+    def __init__(self):
         '''
-        The ClutchMapper object is a loose implementation of the Mapper algorithm
+        The ClutchMapper object is am implementation of the Mapper algorithm
         designed to work with NFL Fantasy data
-
+        '''
+    
+    def fit(self, data, labels):
+        '''
         PARAMETERS
         ----------
         data: {array} point cloud data
@@ -24,7 +27,29 @@ class ClutchMapper:
         '''
         self.data = data
         self.labels = labels
+        self.vertices_ = np.unique(labels)
         self._build_cover()
+        n = len(self.vertices_)
+
+        self.overlap_ = np.zeros((n,n,n), dtype=int)
+
+        for i,j,k in combinations(self.vertices_, 3):
+            centroid_i, radius_i = self.cover_[i]
+            centroid_j, radius_j = self.cover_[j]
+            centroid_k, radius_k = self.cover_[k]
+
+            dist_vec_i = np.linalg.norm(centroid_i - self.data, axis = 1)
+            dist_vec_j = np.linalg.norm(centroid_j - self.data, axis = 1)
+            dist_vec_k = np.linalg.norm(centroid_k - self.data, axis = 1)
+
+            overlap_i = (dist_vec_i < radius_i).astype(int)
+            overlap_j = (dist_vec_j < radius_j).astype(int)
+            overlap_k = (dist_vec_k < radius_k).astype(int)
+
+            self.overlap_[i,i,j] = (overlap_i + overlap_j == 2).sum()
+            self.overlap_[i,i,k] = (overlap_i + overlap_k == 2).sum()
+            self.overlap_[j,j,k] = (overlap_i + overlap_k == 2).sum()
+            self.overlap_[i,j,k] = (overlap_i + overlap_j + overlap_k == 3).sum()
 
     def _build_cover(self):
         '''
@@ -39,12 +64,12 @@ class ClutchMapper:
         '''
         self.cover_ = {}
 
-        for label in sorted(self.labels):
-            ind = np.where(self.labels==label)
+        for vertex in self.vertices_:
+            ind = np.where(self.labels==vertex)
             cluster = self.data[ind]
             centroid = self.data[ind].mean(axis=0).reshape(1,-1)
             radius = np.linalg.norm(centroid - cluster, axis=1).max()
-            self.cover_[label] = (centroid, radius)
+            self.cover_[vertex] = (centroid, radius)
 
         return self
 
@@ -68,43 +93,16 @@ class ClutchMapper:
         '''
 
         # Vertices are the hyperspheres in our cover
-        vertices = sorted(list(self.cover_.keys()))
-
-        simplicial_complex = [[vertex] for vertex in vertices]
+        simplicial_complex = [[vertex] for vertex in self.vertices_]
 
         # Edges
-        for i,j in combinations(vertices, 2):
-            centroid_i, radius_i = self.cover_[i]
-            centroid_j, radius_j = self.cover_[j]
-
-            dist_vec_i = np.linalg.norm(centroid_i - self.data, axis = 1)
-            dist_vec_j = np.linalg.norm(centroid_j - self.data, axis = 1)
-
-            overlap_i = (dist_vec_i < radius_i).astype(int)
-            overlap_j = (dist_vec_j < radius_j).astype(int)
-
-            overlap_count = (overlap_i + overlap_j == 2).sum()
-
-            if overlap_count > p:
+        for i,j in combinations(self.vertices_, 2):
+            if self.overlap_[i,i,j] > p:
                 simplicial_complex.append([i,j])
 
         # Faces
-        for i,j,k in combinations(vertices, 3):
-            centroid_i, radius_i = self.cover_[i]
-            centroid_j, radius_j = self.cover_[j]
-            centroid_k, radius_k = self.cover_[k]
-
-            dist_vec_i = np.linalg.norm(centroid_i - self.data, axis = 1)
-            dist_vec_j = np.linalg.norm(centroid_j - self.data, axis = 1)
-            dist_vec_k = np.linalg.norm(centroid_k - self.data, axis = 1)
-
-            overlap_i = (dist_vec_i < radius_i).astype(int)
-            overlap_j = (dist_vec_j < radius_j).astype(int)
-            overlap_k = (dist_vec_k < radius_k).astype(int)
-
-            overlap_count = (overlap_i + overlap_j + overlap_k == 3).sum()
-
-            if overlap_count > p:
+        for i,j,k in combinations(self.vertices_, 3):
+            if self.overlap_[i,j,k] > p:
                 simplicial_complex.append([i,j,k])
 
         # # Tetrahedra
@@ -131,7 +129,7 @@ class ClutchMapper:
 
         return simplicial_complex
 
-    def build_filtration(self, p):
+    def build_filtration(self):
         '''
         This method constructs a filtration given a cover and the data
         
@@ -140,8 +138,9 @@ class ClutchMapper:
         filtration {dionysus.Filtration} a filtration of simplicial complices
         '''
         self.filtration_ = d.Filtration()
+        start = len(self.data)
             
-        for t, p in enumerate(range(p,-2,-1)):
+        for t, p in enumerate(range(start, -1,-1)):
             simplicial_complex = self.build_complex(p)
             
             for simplex in simplicial_complex:
