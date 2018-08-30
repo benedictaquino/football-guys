@@ -4,7 +4,7 @@ import io
 import pandas as pd
 import numpy as np
 import psycopg2
-from sqlalchemy import create_engine, inspect
+from sqlalchemy import create_engine
 
 def rotoguru_scrape(week=1, year=2017):
     '''
@@ -240,6 +240,92 @@ def query_avg(pos_string=''):
     {}
     ORDER BY avg_points DESC;
     '''.format(pos_string)
+
+    return pd.read_sql(q, engine)
+
+def query_week(week=1, pos='QB'):
+    engine = create_engine("postgresql+psycopg2://football:isback@localhost/nfl")
+    '''
+    This function queries the database and returns a pandas DataFrame containing
+    the id, name, position, and stats for a given week
+
+    PARAMETERS
+    ----------
+    week: {int}
+
+    RETURNS
+    -------
+    {pandas.DataFrame} a DataFrame containing the relevant data
+
+    '''
+    q = '''
+    SELECT id,
+        name,
+        position AS pos,
+        weekpts,
+        passing_attempts,
+        passing_completions,
+        incomplete_passes,
+        passing_yards,
+        passing_touchdowns,
+        interceptions_thrown,
+        every_time_sacked,
+        rushing_attempts,
+        rushing_yards,
+        rushing_touchdowns,
+        receptions,
+        receiving_yards,
+        receiving_touchdowns,
+        kickoff_and_punt_return_yards,
+        kickoff_and_punt_return_touchdowns,
+        fumble_recovered_for_td,
+        fumbles_lost,
+        fumble,
+        two_point_conversions,
+        pat_made,
+        pat_missed,
+        fg_made_0_19,
+        fg_made_20_29,
+        fg_made_30_39,
+        fg_made_40_49,
+        fg_made_50plus,
+        fg_missed_0_19,
+        fg_missed_20_29,
+        fg_missed_30_39,
+        fg_missed_40_49,
+        fg_missed_50plus,
+        sacks,
+        interceptions,
+        fumbles_recovered,
+        fumbles_forced,
+        safeties,
+        touchdowns,
+        blocked_kicks,
+        points_allowed,
+        yards_allowed,
+        tackle,
+        assisted_tackles,
+        sack,
+        defense_interception,
+        forced_fumble,
+        fumbles_recovery,
+        touchdown_interception_return,
+        touchdown_fumble_return,
+        touchdown_blocked_kick,
+        blocked_kick_punt_fg_pat,
+        safety,
+        pass_defended,
+        interception_return_yards,
+        fumble_return_yards,
+        qb_hit,
+        sack_yards,
+        def_2_point_return,
+        team_def_2_point_return
+    FROM fantasy
+    WHERE week = {}
+    AND position = '{}'
+    ORDER BY weekpts DESC;
+    '''.format(week, pos)
 
     return pd.read_sql(q, engine)
 
