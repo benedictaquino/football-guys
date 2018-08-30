@@ -1,9 +1,6 @@
 import numpy as np
-import scipy as sp
 import dionysus as d
 from itertools import combinations
-from sklearn.preprocessing import MinMaxScaler
-from sklearn.cluster import AgglomerativeClustering
 import plotly.plotly as py
 import plotly.graph_objs as go
 import plotly.figure_factory as FF
@@ -48,7 +45,7 @@ class ClutchMapper:
 
             self.overlap_[i,i,j] = (overlap_i + overlap_j == 2).sum()
             self.overlap_[i,i,k] = (overlap_i + overlap_k == 2).sum()
-            self.overlap_[j,j,k] = (overlap_i + overlap_k == 2).sum()
+            self.overlap_[j,j,k] = (overlap_j + overlap_k == 2).sum()
             self.overlap_[i,j,k] = (overlap_i + overlap_j + overlap_k == 3).sum()
 
     def _build_cover(self):
@@ -166,8 +163,6 @@ def visualize_complex(simplicial_complex, title=None):
     -------
     fig: {plotly.graph_objs.Figure}
     '''
-
-
     vertices = np.array([simplex for simplex_list in simplicial_complex for simplex in simplex_list if len(simplex_list) == 1])
     edges = np.array([simplex for simplex in simplicial_complex if len(simplex) == 2])
     faces = np.array([simplex for simplex in simplicial_complex if len(simplex) == 3])
@@ -177,7 +172,7 @@ def visualize_complex(simplicial_complex, title=None):
     n_vertices = len(vertices)
     g.add_vertices(n_vertices)
     g.add_edges(edges)
-    layt = g.layout('kk', dim=3)
+    layt = g.layout('kk_3d')
 
     x_vertex=[layt[k][0] for k in range(n_vertices)]
     y_vertex=[layt[k][1] for k in range(n_vertices)]
@@ -191,8 +186,6 @@ def visualize_complex(simplicial_complex, title=None):
         x_edge += [layt[edge[0]][0], layt[edge[1]][0], None]
         y_edge += [layt[edge[0]][1], layt[edge[1]][1], None]
         z_edge += [layt[edge[0]][2], layt[edge[1]][2], None]
-
-    i, j, k = faces.T
 
     data = [
         go.Scatter3d(
@@ -217,17 +210,23 @@ def visualize_complex(simplicial_complex, title=None):
             mode = 'lines',
             name = 'Edges'
         ),
-        go.Mesh3d(
-            x = x_vertex,
-            y = y_vertex,
-            z = z_vertex,
-            i = i,
-            j = j,
-            k = k,
-            opacity = 0.4,
-            name = 'Faces'
-        )
     ]
+
+    if len(faces) > 0:
+        i, j, k = faces.T
+        data.append(
+            go.Mesh3d(
+                x = x_vertex,
+                y = y_vertex,
+                z = z_vertex,
+                i = i,
+                j = j,
+                k = k,
+                opacity = 0.25,
+                name = 'Faces'
+            )
+        )
+        
 
     axis=dict(showbackground=False,
             showline=False,
