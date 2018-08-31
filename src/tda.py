@@ -24,7 +24,7 @@ class ClutchMapper:
         '''
         self.data = data
         self.labels = labels
-        self.vertices_ = np.unique(labels)
+        self.vertices_ = [np.asscalar(label) for label in np.unique(labels)]
         self._build_cover()
         n = len(self.vertices_)
 
@@ -163,10 +163,10 @@ def visualize_complex(simplicial_complex, title=None):
     -------
     fig: {plotly.graph_objs.Figure}
     '''
-    vertices = np.array([simplex for simplex_list in simplicial_complex for simplex in simplex_list if len(simplex_list) == 1])
-    edges = np.array([simplex for simplex in simplicial_complex if len(simplex) == 2])
-    faces = np.array([simplex for simplex in simplicial_complex if len(simplex) == 3])
-    # tetrahedra = np.array([simplex for simplex in simplicial_complex if len(simplex) == 4])
+    vertices = [simplex for simplex_list in simplicial_complex for simplex in simplex_list if len(simplex_list) == 1]
+    edges = [simplex for simplex in simplicial_complex if len(simplex) == 2]
+    faces = [simplex for simplex in simplicial_complex if len(simplex) == 3]
+    # tetrahedra = [simplex for simplex in simplicial_complex if len(simplex) == 4]
 
     g = ig.Graph()
     n_vertices = len(vertices)
@@ -213,15 +213,15 @@ def visualize_complex(simplicial_complex, title=None):
     ]
 
     if len(faces) > 0:
-        i, j, k = faces.T
+        i, j, k = np.array(faces).T
         data.append(
             go.Mesh3d(
                 x = x_vertex,
                 y = y_vertex,
                 z = z_vertex,
-                i = i,
-                j = j,
-                k = k,
+                i = list(i),
+                j = list(j),
+                k = list(k),
                 opacity = 0.25,
                 name = 'Faces'
             )
