@@ -1,6 +1,6 @@
 import numpy as np
 import dionysus as d
-from itertools import combinations
+from itertools import product, combinations
 import plotly.plotly as py
 import plotly.graph_objs as go
 import plotly.figure_factory as FF
@@ -26,27 +26,36 @@ class ClutchMapper:
         self.labels = labels
         self.vertices_ = [np.asscalar(label) for label in np.unique(labels)]
         self._build_cover()
-        n = len(self.vertices_)
+        self.L = len(self.vertices_)
+        self.O = len(self.data)
 
-        self.overlap_ = np.zeros((n,n,n), dtype=int)
+        self.distances_ = np.ones((self.L,self.O), dtype=float)
 
-        for i,j,k in combinations(self.vertices_, 3):
-            centroid_i, radius_i = self.cover_[i]
-            centroid_j, radius_j = self.cover_[j]
-            centroid_k, radius_k = self.cover_[k]
+        for l,o in product(range(self.L), range(self.O)):
+            landmark = self.cover_[l][0]
+            observer = self.data[o]
+            distance = np.linalg.norm(landmark-observation)
+            distances_[l,o] = distance
 
-            dist_vec_i = np.linalg.norm(centroid_i - self.data, axis = 1)
-            dist_vec_j = np.linalg.norm(centroid_j - self.data, axis = 1)
-            dist_vec_k = np.linalg.norm(centroid_k - self.data, axis = 1)
+        # self.overlap_ = np.zeros((l,l,l), dtype=int)
 
-            overlap_i = (dist_vec_i < radius_i).astype(int)
-            overlap_j = (dist_vec_j < radius_j).astype(int)
-            overlap_k = (dist_vec_k < radius_k).astype(int)
+        # for i,j,k in combinations(self.vertices_, 3):
+        #     centroid_i, radius_i = self.cover_[i]
+        #     centroid_j, radius_j = self.cover_[j]
+        #     centroid_k, radius_k = self.cover_[k]
 
-            self.overlap_[i,i,j] = (overlap_i + overlap_j == 2).sum()
-            self.overlap_[i,i,k] = (overlap_i + overlap_k == 2).sum()
-            self.overlap_[j,j,k] = (overlap_j + overlap_k == 2).sum()
-            self.overlap_[i,j,k] = (overlap_i + overlap_j + overlap_k == 3).sum()
+        #     dist_vec_i = np.linalg.norm(centroid_i - self.data, axis = 1)
+        #     dist_vec_j = np.linalg.norm(centroid_j - self.data, axis = 1)
+        #     dist_vec_k = np.linalg.norm(centroid_k - self.data, axis = 1)
+
+        #     overlap_i = (dist_vec_i < radius_i).astype(int)
+        #     overlap_j = (dist_vec_j < radius_j).astype(int)
+        #     overlap_k = (dist_vec_k < radius_k).astype(int)
+
+        #     self.overlap_[i,i,j] = (overlap_i + overlap_j == 2).sum()
+        #     self.overlap_[i,i,k] = (overlap_i + overlap_k == 2).sum()
+        #     self.overlap_[j,j,k] = (overlap_j + overlap_k == 2).sum()
+        #     self.overlap_[i,j,k] = (overlap_i + overlap_j + overlap_k == 3).sum()
 
     def _build_cover(self):
         '''
@@ -77,54 +86,69 @@ class ClutchMapper:
 
         PARAMETERS
         ----------
-        p: {int} the number of observations that must be in the intersection of 
-                hyperspheres to create an edge, face, or tetrahedra
+        p: {float} the distance threshold to form simplices
 
         # TODO: Implement this
         k: {int} specifify up to which dimension k-simplex to calculate
 
         RETURNS
         -------
-        simplices: {list} a list of lists containing the simplices, each simplex is 
-                        a list of the vertices that build the simplex.
+        landmark_complex: {list} a list of lists containing the simplices
+        observer_complex: {list} a list of lists containing the simplices
         '''
+        # Subtract the distances computed in the fit method from p to see which
+        # observations and landmarks are within p of each other
+        within_p = np.sign(p - self.distances_)
+        # If within_p[l,o] is -1, l is within p of o
+        # If within_p[l,o] is 1, l is within p of o
 
+        # Landmark Complex
+        # ----------------
         # Vertices are the hyperspheres in our cover
-        simplicial_complex = [[vertex] for vertex in self.vertices_]
+        landmark_complex = [[vertex] for vertex in self.vertices_]
 
         # Edges
         for i,j in combinations(self.vertices_, 2):
-            if self.overlap_[i,i,j] > p:
-                simplicial_complex.append([i,j])
+            for o in range(self.O):
+                if within_p[i,o]+within_p[j,o] == 2:
+                    landmark_complex.append([i,j])
 
         # Faces
-        for i,j,k in combinations(self.vertices_, 3):
-            if self.overlap_[i,j,k] > p:
-                simplicial_complex.append([i,j,k])
+        for i,j,k in combinations(self.vertices_,3):
+            for o in range(self.O):
+                if within_p[i,o]+within_p[j,o]+within_p[k,o] == 3:
+                    landmark_complex.append([i,j,k])
 
-        # # Tetrahedra
-        # for i,j,k,l in combinations(vertices, 4):
-        #     centroid_i, radius_i = self.cover_[i]
-        #     centroid_j, radius_j = self.cover_[j]
-        #     centroid_k, radius_k = self.cover_[k]
-        #     centroid_l, radius_l = self.cover_[l]
+        # Tetrahedra
+        for i,j,k,h in combinations(self.vertices_,4):
+            for o in range(self.O):
+                if within_p[i,o]+within_p[j,o]+within_p[k,o]+within_p[h,o] == 4:
+                    landmark_complex.append([i,j,k,h])
 
-        #     dist_vec_i = np.linalg.norm(centroid_i - self.data, axis = 1)
-        #     dist_vec_j = np.linalg.norm(centroid_j - self.data, axis = 1)
-        #     dist_vec_k = np.linalg.norm(centroid_k - self.data, axis = 1)
-        #     dist_vec_l = np.linalg.norm(centroid_l - self.data, axis = 1)
+        # Observation Complex
+        # ----------------
+        # Vertices are the hyperspheres in our cover
+        observation_complex = [[vertex] for vertex in range(len(self.data))]
 
-        #     overlap_i = (dist_vec_i < radius_i).astype(int)
-        #     overlap_j = (dist_vec_j < radius_j).astype(int)
-        #     overlap_k = (dist_vec_k < radius_k).astype(int)
-        #     overlap_l = (dist_vec_l < radius_l).astype(int)
+        # Edges
+        for i,j in combinations(range(self.O)_, 2):
+            for l in range(self.L):
+                if within_p[i,l]+within_p[j,l] == 2:
+                    observer_complex.append([i,j])
 
-        #     overlap_count = (overlap_i + overlap_j + overlap_k + overlap_l == 4).sum()
+        # Faces
+        for i,j,k in combinations(range(self.O),3):
+            for l in range(self.L):
+                if within_p[i,l]+within_p[j,l]+within_p[k,l] == 3:
+                    observer_complex.append([i,j,k])
 
-        #     if overlap_count > p:
-        #         simplicial_complex.append([i,j,k,l])
+        # Tetrahedra
+        for i,j,k,h in combinations(range(self.O),4):
+            for l in range(self.L):
+                if within_p[i,l]+within_p[j,l]+within_p[k,l]+within_p[h,l] == 4:
+                    observer_complex.append([i,j,k,h])
 
-        return simplicial_complex
+        return landmark_complex, observer_complex
 
     def build_filtration(self):
         '''
