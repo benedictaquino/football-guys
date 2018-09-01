@@ -34,8 +34,8 @@ class ClutchMapper:
         for l,o in product(range(self.L), range(self.O)):
             landmark = self.cover_[l][0]
             observer = self.data[o]
-            distance = np.linalg.norm(landmark-observation)
-            distances_[l,o] = distance
+            distance = np.linalg.norm(landmark-observer)
+            self.distances_[l,o] = distance
 
         # self.overlap_ = np.zeros((l,l,l), dtype=int)
 
@@ -89,7 +89,7 @@ class ClutchMapper:
         p: {float} the distance threshold to form simplices
 
         # TODO: Implement this
-        k: {int} specifify up to which dimension k-simplex to calculate
+        k: {int} specifify up to which dimension k-complex to calculate
 
         RETURNS
         -------
@@ -112,45 +112,51 @@ class ClutchMapper:
             for o in range(self.O):
                 if within_p[i,o]+within_p[j,o] == 2:
                     landmark_complex.append([i,j])
+                    break
 
         # Faces
         for i,j,k in combinations(self.vertices_,3):
             for o in range(self.O):
                 if within_p[i,o]+within_p[j,o]+within_p[k,o] == 3:
                     landmark_complex.append([i,j,k])
+                    break
 
-        # Tetrahedra
-        for i,j,k,h in combinations(self.vertices_,4):
-            for o in range(self.O):
-                if within_p[i,o]+within_p[j,o]+within_p[k,o]+within_p[h,o] == 4:
-                    landmark_complex.append([i,j,k,h])
+        # # Tetrahedra
+        # for i,j,k,h in combinations(self.vertices_,4):
+        #     for o in range(self.O):
+        #         if within_p[i,o]+within_p[j,o]+within_p[k,o]+within_p[h,o] == 4:
+        #             landmark_complex.append([i,j,k,h])
+        #             break
 
         # Observation Complex
         # ----------------
         # Vertices are the hyperspheres in our cover
-        observation_complex = [[vertex] for vertex in range(len(self.data))]
+        observer_complex = [[vertex] for vertex in range(len(self.data))]
 
         # Edges
-        for i,j in combinations(range(self.O)_, 2):
+        for i,j in combinations(range(self.O), 2):
             for l in range(self.L):
-                if within_p[i,l]+within_p[j,l] == 2:
+                if within_p[l,i]+within_p[l,j] == 2:
                     observer_complex.append([i,j])
+                    break
 
         # Faces
         for i,j,k in combinations(range(self.O),3):
             for l in range(self.L):
-                if within_p[i,l]+within_p[j,l]+within_p[k,l] == 3:
+                if within_p[l,i]+within_p[l,j]+within_p[l,k] == 3:
                     observer_complex.append([i,j,k])
+                    break
 
-        # Tetrahedra
-        for i,j,k,h in combinations(range(self.O),4):
-            for l in range(self.L):
-                if within_p[i,l]+within_p[j,l]+within_p[k,l]+within_p[h,l] == 4:
-                    observer_complex.append([i,j,k,h])
+        # # Tetrahedra
+        # for i,j,k,h in combinations(range(self.O),4):
+        #     for l in range(self.L):
+        #         if within_p[l,i]+within_p[l,j]+within_p[l,k]+within_p[l,h] == 4:
+        #             observer_complex.append([i,j,k,h])
+        #             break
 
         return landmark_complex, observer_complex
 
-    def build_filtration(self):
+    def build_filtrations(self):
         '''
         This method constructs a filtration given a cover and the data
         
@@ -158,18 +164,24 @@ class ClutchMapper:
         -------
         filtration {dionysus.Filtration} a filtration of simplicial complices
         '''
-        self.filtration_ = d.Filtration()
-        start = len(self.data)
-            
-        for t, p in enumerate(range(start, -1,-1)):
-            simplicial_complex = self.build_complex(p)
-            
-            for simplex in simplicial_complex:
-                self.filtration_.append(d.Simplex(simplex, t))
+        self.landmark_filtration_ = d.Filtration()
+        self.observer_filtration_ = d.Filtration()
 
-        self.filtration_.sort()
+        end = self.distances_.max()
+            
+        for p in np.linspace(0,end):
+            landmark_complex, observer_complex = self.build_complex(p)
+            
+            for simplex in landmark_complex:
+                self.landmark_filtration_.append(d.Simplex(simplex, p))
+            
+            for simplex in observer_complex:
+                self.observer_filtration_.append(d.Simplex(simplex, p))
 
-        return self.filtration_
+        self.landmark_filtration_.sort()
+        self.observer_filtration_.sort()
+
+        return self.landmark_filtration_, self.observer_filtration_
 
 def visualize_complex(simplicial_complex, title=None):
     '''
