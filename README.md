@@ -16,8 +16,8 @@ high-dimensional, especially relative to the amount of observations.
 ## Topological Data Analysis
 
 The idea here is to map the data to a low-dimensional representation. Since I am
-looking at Fantasy Football data, I believed that the fantasy points of 
-each player was a good low-dimensional projection. It is easy to interpret as a
+looking at Fantasy Football data, I believe that the fantasy points of each  
+player was a good low-dimensional projection. It is easy to interpret as a 
 metric for a players performance, especially when looking at individual 
 positions.
 
@@ -56,8 +56,9 @@ which provide insight about the structure of the complexes.
 - [x] Generalize code from [notebook](notebooks/TDA.ipynb)
 - [x] Visualize the simplicial complices
 - [x] Analyze barcode diagrams
-- [ ] Create interactive visualization
-- [ ] Deploy Flask web app on AWS EC2 instance
+- [x] Create interactive visualization
+- [x] Deploy Flask web app on AWS EC2 instance
+- [ ] Create more simplicial complexes
 
 ### Stretch/Tangential Goals
 - [ ] Optimize code
