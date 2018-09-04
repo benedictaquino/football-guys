@@ -37,26 +37,6 @@ class ClutchMapper:
             distance = np.linalg.norm(landmark-observer)
             self.distances_[l,o] = distance
 
-        # self.overlap_ = np.zeros((l,l,l), dtype=int)
-
-        # for i,j,k in combinations(self.vertices_, 3):
-        #     centroid_i, radius_i = self.cover_[i]
-        #     centroid_j, radius_j = self.cover_[j]
-        #     centroid_k, radius_k = self.cover_[k]
-
-        #     dist_vec_i = np.linalg.norm(centroid_i - self.data, axis = 1)
-        #     dist_vec_j = np.linalg.norm(centroid_j - self.data, axis = 1)
-        #     dist_vec_k = np.linalg.norm(centroid_k - self.data, axis = 1)
-
-        #     overlap_i = (dist_vec_i < radius_i).astype(int)
-        #     overlap_j = (dist_vec_j < radius_j).astype(int)
-        #     overlap_k = (dist_vec_k < radius_k).astype(int)
-
-        #     self.overlap_[i,i,j] = (overlap_i + overlap_j == 2).sum()
-        #     self.overlap_[i,i,k] = (overlap_i + overlap_k == 2).sum()
-        #     self.overlap_[j,j,k] = (overlap_j + overlap_k == 2).sum()
-        #     self.overlap_[i,j,k] = (overlap_i + overlap_j + overlap_k == 3).sum()
-
     def _build_cover(self):
         '''
         This method builds a cover for point cloud data made up of sets of 
@@ -255,9 +235,9 @@ def visualize_complex(simplicial_complex, title=None):
                 x = x_vertex,
                 y = y_vertex,
                 z = z_vertex,
-                i = list(i),
-                j = list(j),
-                k = list(k),
+                i = [np.asscalar(n) for n in i],
+                j = [np.asscalar(n) for n in j],
+                k = [np.asscalar(n) for n in k],
                 opacity = 0.25,
                 name = 'Faces'
             )
