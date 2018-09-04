@@ -51,15 +51,18 @@ which provide insight about the structure of the complexes.
 
 ### Tools Used
 
- - Python
-      - BeautifulSoup
-      - pandas
-      - NumPy
-      - SQLAlchemy
-      - Psycopg2
-      - Dionysus 2
-      - Plotly
-      - iGraph
-      - Flask
-      - Dash
-      - PyMongo
+- [Python](https://www.python.org/)
+    - [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
+    - [pandas](https://pandas.pydata.org/)
+    - [NumPy](http://www.numpy.org/)
+    - [SQLAlchemy](https://www.sqlalchemy.org/)
+    - [Psycopg](http://initd.org/psycopg/)
+    - [Dionysus 2](http://www.mrzv.org/software/dionysus2/)
+    - [Plotly](https://plot.ly/)
+    - [iGraph](http://igraph.org/redirect.html)
+    - [Flask](http://flask.pocoo.org/)
+    - [Dash](https://plot.ly/products/dash/)
+    - [PyMongo](https://api.mongodb.com/python/current/)
+- [PostgreSQL](https://www.postgresql.org/)
+- [MongoDB](https://www.mongodb.com/)
+- [Material Kit Bootstrap Template by Creative Tim](https://demos.creative-tim.com/material-kit/index.html)
