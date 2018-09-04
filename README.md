@@ -47,20 +47,17 @@ which provide insight about the structure of the complexes.
 
 ### [Technical Report](report.md)
 
+### Tools Used
 
-
-### To-do
-- [x] Gather data
-- [x] Clean data and insert into to Postgres database
-- [x] Implement Mapper algorithm to build a simplicial complex
-- [x] Generalize code from [notebook](notebooks/TDA.ipynb)
-- [x] Visualize the simplicial complices
-- [x] Analyze barcode diagrams
-- [x] Create interactive visualization
-- [x] Deploy Flask web app on AWS EC2 instance
-- [ ] Create more simplicial complexes
-
-### Stretch/Tangential Goals
-- [ ] Optimize code
-- [ ] Use information gained from topological data analysis to develop a model
-      that can be used to optimize daily fantasy lineups
+ - Python
+      - BeautifulSoup
+      - pandas
+      - NumPy
+      - SQLAlchemy
+      - Psycopg2
+      - Dionysus 2
+      - Plotly
+      - iGraph
+      - Flask
+      - Dash
+      - PyMongo
