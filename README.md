@@ -1,4 +1,4 @@
-# Mapping the Clutch Gene
+# [Mapping the Clutch Gene](http://benedictaquino.com/mapping-the-clutch-gene)
 
 The goal of this project is to utilize computational topology to understand the 
 structure of a high-dimensional data set in an effort to overcome the [curse of 
@@ -46,6 +46,8 @@ essentially a series of simplicial complexes, and computed their
 which provide insight about the structure of the complexes.
 
 ### [Technical Report](report.md)
+
+### [Interactive Web App](http://benedictaquino.com/mapping-the-clutch-gene)
 
 ### Tools Used
 
