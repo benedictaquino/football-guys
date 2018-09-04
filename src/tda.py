@@ -163,7 +163,7 @@ class ClutchMapper:
 
         return self.landmark_filtration_, self.observer_filtration_
 
-def visualize_complex(simplicial_complex, title=None):
+def visualize_complex(simplicial_complex, title=None, names=None):
     '''
     This function constructs a visualization of the given simplical complex
 
@@ -203,6 +203,9 @@ def visualize_complex(simplicial_complex, title=None):
         y_edge += [layt[edge[0]][1], layt[edge[1]][1], None]
         z_edge += [layt[edge[0]][2], layt[edge[1]][2], None]
 
+    if names == None:
+        names = vertices
+        
     data = [
         go.Scatter3d(
             x = x_vertex,
@@ -216,7 +219,7 @@ def visualize_complex(simplicial_complex, title=None):
                                 colorscale='Viridis',
                                 line=dict(color='rgb(50,50,50)', width=0.5)
                                 ),
-                text=vertices,
+                text=names,
                 hoverinfo='text'
         ),
         go.Scatter3d(
