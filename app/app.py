@@ -14,7 +14,6 @@ import numpy as np
 import pymongo
 
 server = Flask(__name__)
-# app = Flask(__name__)
 
 @server.route('/')
 @server.route('/index')
@@ -39,11 +38,7 @@ def old_index():
 
 app = dash.Dash(__name__, server=server)
 
-<<<<<<< HEAD
 positions = ['QB', 'RB', 'WR', 'TE', 'DEF', 'K', 'LB', 'DB', 'DL']
-=======
-positions = ['QB', 'RB', 'WR', 'TE', 'DEF', 'K', 'LB', 'DB', 'DE']
->>>>>>> f18489b65796da178ad149ff38e2eb8df14b08a2
 
 app.layout = html.Div(children=[
     html.Div([
