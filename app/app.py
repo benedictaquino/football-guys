@@ -39,7 +39,7 @@ def old_index():
 
 app = dash.Dash(__name__, server=server)
 
-positions = ['QB', 'RB', 'WR', 'TE', 'DEF', 'K', 'LB', 'DB', 'DE']
+positions = ['QB', 'RB', 'WR', 'TE', 'DEF', 'K', 'LB', 'DB', 'DL']
 
 app.layout = html.Div(children=[
     html.Div([
