@@ -237,7 +237,7 @@ def query_avg(pos_string=''):
         AVG(team_def_2_point_return) AS avg_team_def_2_point_return
     FROM fantasy
     GROUP BY id, name, pos
-    {}
+    HAVING position = '{}'
     ORDER BY avg_points DESC;
     '''.format(pos_string)
 
