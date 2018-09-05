@@ -1,8 +1,11 @@
 import os
 import sys
-module_path = os.path.abspath(os.path.join('..'))
+module_path = os.path.abspath(os.path.join(".."))
 if module_path not in sys.path:
     sys.path.append(module_path)
+site_pkgs = os.path.join("..", "venv", "lib", "python3.6m", "site-packages")
+if site_pkgs not in sys.path:
+    sys.path.append(site_pkgs)
 from flask import Flask, render_template, request, jsonify
 import dash
 import dash_core_components as dcc
