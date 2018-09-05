@@ -12,6 +12,7 @@ import plotly.plotly as py
 import json
 import numpy as np
 import pymongo
+from src.data_pipeline import query_week, query_avg
 
 server = Flask(__name__)
 
@@ -78,8 +79,30 @@ app.layout = html.Div(children=[
                 step=0.5,
                 marks={str(t): str(t) for t in np.arange(0.0,10.1,0.5)}
             )
-    ])
+    ]),
+    html.Div(
+        id='table-container',
+        style = {'float': 'center'}
+    )
 ])
+
+app.css.append_css({
+    "external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"
+})
+
+def generate_table(dataframe):
+    return html.Table(
+        # Header
+        [html.Tr([html.Th(col) for col in dataframe.columns])] +
+
+        # Body
+        [html.Tr([
+            html.Td(dataframe.iloc[i][col]) for col in dataframe.columns
+        ]) for i in range(len(dataframe))],
+        
+        style={'marginBottom': 50, 'marginTop': 25}
+
+    )
 
 @server.route("/complex")
 def nfl_complex():
@@ -101,6 +124,19 @@ def update_graph(pos, complex_type, t, week):
     del complex_data['name']
     figure = go.Figure(complex_data)
     return figure
+
+@app.callback(
+    dash.dependencies.Output('table-container', 'children'),
+    [dash.dependencies.Input('position', 'value'),
+     dash.dependencies.Input('t-slider', 'value'),
+     dash.dependencies.Input('week', 'value')])
+def display_table(pos, t, week):
+    if week is 'AVG':
+        df = query_avg(pos.upper()).iloc[:,1:4]
+    else:
+        df = query_week(week, pos.upper()).iloc[:,1:4]
+    
+    return generate_table(df)
 
 if __name__ == '__main__':
     client = pymongo.MongoClient()
