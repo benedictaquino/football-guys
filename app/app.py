@@ -40,6 +40,8 @@ app = dash.Dash(__name__, server=server)
 
 positions = ['QB', 'RB', 'WR', 'TE', 'DEF', 'K', 'LB', 'DB', 'DL']
 
+week = ['AVG'] + [i for i in range(1,18)]
+
 app.layout = html.Div(children=[
     html.Div([
         html.Div([
@@ -54,7 +56,15 @@ app.layout = html.Div(children=[
                 value='observer',
                 labelStyle={'display': 'inline-block'}
             )
-        ])
+        ],
+        style={'width': '48%', 'display': 'inline-block'}),
+        html.Div([
+            dcc.Dropdown(
+                id='week',
+                options=[{'label': i, 'value': i} for i in week],
+                value=1)
+        ],
+        style={'width': '48%', 'float': 'right', 'display': 'inline-block'})
     ]),
     dcc.Graph(
         id='complex'
@@ -79,9 +89,14 @@ def nfl_complex():
     dash.dependencies.Output('complex', 'figure'),
     [dash.dependencies.Input('position', 'value'),
      dash.dependencies.Input('complex-type', 'value'),
-     dash.dependencies.Input('t-slider', 'value')])
-def update_graph(pos, complex_type, t):
-    name = '{}_avg_{}_complex_{}'.format(pos, complex_type, float(t))
+     dash.dependencies.Input('t-slider', 'value'),
+     dash.dependencies.Input('week', 'value')])
+def update_graph(pos, complex_type, t, week):
+    if week == 'AVG':
+        week = week.lower()
+    else:
+        week = 'week_{}'.format(week)
+    name = '{}_{}_{}_complex_{}'.format(pos, week, complex_type, float(t))
     complex_data = COMPLEXES.find_one({'name': name})
     del complex_data['name']
     figure = go.Figure(complex_data)
