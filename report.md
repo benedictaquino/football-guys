@@ -170,7 +170,7 @@ sets for my cover.
 ###### Figure 7.
 ![alt text][te_avg_dendrogram]
 
-After visual inspection of the dendrogram shown in Figure 1 I decided to use 12 
+After visual inspection of the dendrogram shown in Figure 1 I decided to use 11 
 sets for my cover.
 
 ###### Figure 8.
@@ -186,7 +186,7 @@ sets for my cover.
 ###### Figure 10.
 ![alt text][k_avg_dendrogram]
 
-After visual inspection of the dendrogram shown in Figure 1 I decided to use 12 
+After visual inspection of the dendrogram shown in Figure 1 I decided to use 8 
 sets for my cover.
 
 ###### Figure 11.
@@ -198,11 +198,11 @@ sets for my cover.
 
 #### Insights
 
-### [Team Defenses](notebooks/def-landmark-observer.ipynb)
+### [Team Defenses and Special Teams](notebooks/def-landmark-observer.ipynb)
 ###### Figure 13.
 ![alt text][def_avg_dendrogram]
 
-After visual inspection of the dendrogram shown in Figure 1 I decided to use 12 
+After visual inspection of the dendrogram shown in Figure 1 I decided to use 7 
 sets for my cover.
 
 ###### Figure 14.
@@ -218,7 +218,7 @@ sets for my cover.
 ###### Figure 16.
 ![alt text][lb_avg_dendrogram]
 
-After visual inspection of the dendrogram shown in Figure 1 I decided to use 12 
+After visual inspection of the dendrogram shown in Figure 1 I decided to use 11 
 sets for my cover.
 
 ###### Figure 17.
@@ -234,7 +234,7 @@ sets for my cover.
 ###### Figure 19.
 ![alt text][db_avg_dendrogram]
 
-After visual inspection of the dendrogram shown in Figure 1 I decided to use 12 
+After visual inspection of the dendrogram shown in Figure 1 I decided to use 7 
 sets for my cover.
 
 ###### Figure 20.
@@ -250,7 +250,7 @@ sets for my cover.
 ###### Figure 22.
 ![alt text][dl_avg_dendrogram]
 
-After visual inspection of the dendrogram shown in Figure 1 I decided to use 12 
+After visual inspection of the dendrogram shown in Figure 1 I decided to use 10 
 sets for my cover.
 
 ###### Figure 23.
