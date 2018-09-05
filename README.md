@@ -55,6 +55,8 @@ which provide insight about the structure of the complexes.
     - [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
     - [pandas](https://pandas.pydata.org/)
     - [NumPy](http://www.numpy.org/)
+    - [matplotlib](https://matplotlib.org/)
+    - [seaborn](https://seaborn.pydata.org/)
     - [SQLAlchemy](https://www.sqlalchemy.org/)
     - [Psycopg](http://initd.org/psycopg/)
     - [Dionysus 2](http://www.mrzv.org/software/dionysus2/)

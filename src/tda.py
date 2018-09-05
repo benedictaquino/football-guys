@@ -1,10 +1,20 @@
+import os
+import sys
+module_path = os.path.abspath(os.path.join('..'))
+if module_path not in sys.path:
+    sys.path.append(module_path)
+import pandas as pd
 import numpy as np
 import dionysus as d
 from itertools import product, combinations
+from scipy.spatial.distance import cdist
 import plotly.plotly as py
 import plotly.graph_objs as go
 import plotly.figure_factory as FF
 import igraph as ig
+import pymongo
+from sklearn.cluster import AgglomerativeClustering
+from src.data_pipeline import query_avg, query_week
 
 class ClutchMapper:
 
@@ -28,14 +38,16 @@ class ClutchMapper:
         self._build_cover()
         self.L = len(self.vertices_)
         self.O = len(self.data)
+        self.landmarks = np.array([self.cover_[i][0].flatten() for i in self.cover_])
+        self.distances_ = cdist(self.landmarks, self.data)
 
-        self.distances_ = np.ones((self.L,self.O), dtype=float)
+        # self.distances_ = np.ones((self.L,self.O), dtype=float)
 
-        for l,o in product(range(self.L), range(self.O)):
-            landmark = self.cover_[l][0]
-            observer = self.data[o]
-            distance = np.linalg.norm(landmark-observer)
-            self.distances_[l,o] = distance
+        # for l,o in product(range(self.L), range(self.O)):
+        #     landmark = self.cover_[l][0]
+        #     observer = self.data[o]
+        #     distance = np.linalg.norm(landmark-observer)
+        #     self.distances_[l,o] = distance
 
     def _build_cover(self):
         '''
@@ -272,3 +284,42 @@ def visualize_complex(simplicial_complex, title=None, names=None):
     fig = go.Figure(data=data, layout=layout)
 
     return fig
+
+client = pymongo.MongoClient()
+db_name = 'nfl'
+db = client[db_name]
+collection_name = 'complexes'
+COMPLEXES = db[collection_name]
+COMPLEXES.create_index([('name', pymongo.ASCENDING)], unique=True)
+
+def visualization_to_db(figure, name):
+    fig_json = figure.to_plotly_json()
+    fig_json = name
+    COMPLEXES.insert_one(fig_json)
+
+if __name__ == '__main__':
+
+    # Quarterbacks
+    for week in range(1,18):
+        df = query_week(week=week, pos='QB')
+        names = list(df['name'].values)
+        X = df['avg_points'].values.reshape(-1,1)
+        agg = AgglomerativeClustering(n_clusters=7, linkage='ward')
+        labels = agg.fit_predict(X)
+
+        stats = df.iloc[:,4:].values
+
+        scaler = StandardScaler()
+        scaled_stats = scaler.fit_transform(stats)
+
+        cmapper = ClutchMapper()
+        cmapper.fit(scaled_stats, labels)
+
+        for i in np.arange(0,10.1,0.5):
+            landmark_complex, observer_complex = cmapper.build_complex(i)
+
+            landmark_fig = visualize_complex(landmark_complex,'QB Week {}: Landmark Complex at t={}'.format(week, i))
+            observer_fig = visualize_complex(observer_complex, 'QB Week {}: Observer Complex at t={}'.format(week, i), names)
+
+            visualization_to_db(landmark_fig, 'qb_week_{}_landmark_complex_{}'.format(week, i))
+            visualization_to_db(observer_fig, 'qb_week_{}_observer_complex_{}'.format(week, i))

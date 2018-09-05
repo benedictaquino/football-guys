@@ -151,116 +151,117 @@ sets for my cover.
 #### Insights
 
 ### [Wide Receivers](notebooks/wr-landmark-observer.ipynb)
-###### Figure 1.
+###### Figure 4.
 ![alt text][wr_avg_dendrogram]
 
 After visual inspection of the dendrogram shown in Figure 1 I decided to use 12 
 sets for my cover.
 
-###### Figure 2.
+###### Figure 5.
 ![alt text][wr_avg_cover]
 
-###### Figure 3.
+###### Figure 6.
 ![alt text][wr_avg_barcode_landmark]
 ![alt text][wr_avg_barcode_observer]
 
 #### Insights
 
 ### [Tight Ends](notebooks/te-landmark-observer.ipynb)
-###### Figure 1.
+###### Figure 7.
 ![alt text][te_avg_dendrogram]
 
 After visual inspection of the dendrogram shown in Figure 1 I decided to use 12 
 sets for my cover.
 
-###### Figure 2.
+###### Figure 8.
 ![alt text][te_avg_cover]
 
-###### Figure 3.
+###### Figure 9.
 ![alt text][te_avg_barcode_landmark]
 ![alt text][te_avg_barcode_observer]
 
 #### Insights
 
 ### [Kickers](notebooks/k-landmark-observer.ipynb)
-###### Figure 1.
+###### Figure 10.
 ![alt text][k_avg_dendrogram]
 
 After visual inspection of the dendrogram shown in Figure 1 I decided to use 12 
 sets for my cover.
 
-###### Figure 2.
+###### Figure 11.
 ![alt text][k_avg_cover]
 
-###### Figure 3.
+###### Figure 12.
 ![alt text][k_avg_barcode_landmark]
 ![alt text][k_avg_barcode_observer]
 
 #### Insights
 
 ### [Team Defenses](notebooks/def-landmark-observer.ipynb)
-###### Figure 1.
+###### Figure 13.
 ![alt text][def_avg_dendrogram]
 
 After visual inspection of the dendrogram shown in Figure 1 I decided to use 12 
 sets for my cover.
 
-###### Figure 2.
+###### Figure 14.
 ![alt text][def_avg_cover]
 
-###### Figure 3.
+###### Figure 15.
 ![alt text][def_avg_barcode_landmark]
 ![alt text][def_avg_barcode_observer]
 
 #### Insights
 
 ### [Linebackers](notebooks/lb-landmark-observer.ipynb)
-###### Figure 1.
+###### Figure 16.
 ![alt text][lb_avg_dendrogram]
 
 After visual inspection of the dendrogram shown in Figure 1 I decided to use 12 
 sets for my cover.
 
-###### Figure 2.
+###### Figure 17.
 ![alt text][lb_avg_cover]
 
-###### Figure 3.
+###### Figure 18.
 ![alt text][lb_avg_barcode_landmark]
 ![alt text][lb_avg_barcode_observer]
 
 #### Insights
 
 ### [Defensive Backs](notebooks/db-landmark-observer.ipynb)
-###### Figure 1.
+###### Figure 19.
 ![alt text][db_avg_dendrogram]
 
 After visual inspection of the dendrogram shown in Figure 1 I decided to use 12 
 sets for my cover.
 
-###### Figure 2.
+###### Figure 20.
 ![alt text][db_avg_cover]
 
-###### Figure 3.
+###### Figure 21.
 ![alt text][db_avg_barcode_landmark]
 ![alt text][db_avg_barcode_observer]
 
 #### Insights
 
 ### [Defensive Lineman](notebooks/dl-landmark-observer.ipynb)
-###### Figure 1.
+###### Figure 22.
 ![alt text][dl_avg_dendrogram]
 
 After visual inspection of the dendrogram shown in Figure 1 I decided to use 12 
 sets for my cover.
 
-###### Figure 2.
+###### Figure 23.
 ![alt text][dl_avg_cover]
 
-###### Figure 3.
+###### Figure 24.
 ![alt text][dl_avg_barcode_landmark]
 ![alt text][dl_avg_barcode_observer]
 
 #### Insights
+
 [RotoGuru]: http://rotoguru.net/
 [NFL Fantasy API]: http://api.fantasy.nfl.com/
 [data_pipeline.py]: src/data_pipeline.py
