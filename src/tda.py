@@ -14,6 +14,7 @@ import plotly.figure_factory as FF
 import igraph as ig
 import pymongo
 from sklearn.cluster import AgglomerativeClustering
+from sklearn.preprocessing import StandardScaler
 from src.data_pipeline import query_avg, query_week
 
 class ClutchMapper:
@@ -286,7 +287,7 @@ COMPLEXES.create_index([('name', pymongo.ASCENDING)], unique=True)
 
 def visualization_to_db(figure, name):
     fig_json = figure.to_plotly_json()
-    fig_json = name
+    fig_json['name'] = name
     COMPLEXES.insert_one(fig_json)
 
 if __name__ == '__main__':
