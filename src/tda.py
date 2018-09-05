@@ -297,6 +297,7 @@ if __name__ == '__main__':
     for n, pos in zip(n_sets, positions):
         for week in range(1,18):
             df = query_week(week=week, pos=pos)
+            df = df.iloc[:100]
             names = list(df['name'].values)
             X = df['weekpts'].values.reshape(-1,1)
             agg = AgglomerativeClustering(n_clusters=n, linkage='ward')
