@@ -1,4 +1,8 @@
-
+import os
+import sys
+module_path = os.path.abspath(os.path.join(".."))
+if module_path not in sys.path:
+    sys.path.append(module_path)
 from flask import Flask, render_template, request, jsonify
 import dash
 import dash_core_components as dcc
@@ -128,12 +132,6 @@ def update_table(pos, t, week):
 
 
 if __name__ == '__main__':
-    import os
-    import sys
-    module_path = os.path.abspath(os.path.join(".."))
-    if module_path not in sys.path:
-        sys.path.append(module_path)
-
     client = pymongo.MongoClient()
     db_name = 'nfl'
     db = client[db_name]
