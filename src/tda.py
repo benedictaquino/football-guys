@@ -41,14 +41,6 @@ class ClutchMapper:
         self.landmarks = np.array([self.cover_[i][0].flatten() for i in self.cover_])
         self.distances_ = cdist(self.landmarks, self.data)
 
-        # self.distances_ = np.ones((self.L,self.O), dtype=float)
-
-        # for l,o in product(range(self.L), range(self.O)):
-        #     landmark = self.cover_[l][0]
-        #     observer = self.data[o]
-        #     distance = np.linalg.norm(landmark-observer)
-        #     self.distances_[l,o] = distance
-
     def _build_cover(self):
         '''
         This method builds a cover for point cloud data made up of sets of 
