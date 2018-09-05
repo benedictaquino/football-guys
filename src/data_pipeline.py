@@ -43,7 +43,7 @@ def rotoguru_scrape(week=1, year=2017):
 
     # Reformat name column
     new_names=[]
-    for i, name in enumerate(df['name']):
+    for name in df['name']:
         if ',' in name:
             names = name.split(', ')
             names.reverse()
