@@ -16,7 +16,7 @@ high-dimensional, especially relative to the amount of observations.
 ## Topological Data Analysis
 
 The idea here is to map the data to a low-dimensional representation. Since I am
-looking at Fantasy Football data, I believe that the fantasy points of each  
+looking at Fantasy Football data, I believe that the fantasy points of each 
 player was a good low-dimensional projection. It is easy to interpret as a 
 metric for a players performance, especially when looking at individual 
 positions.
