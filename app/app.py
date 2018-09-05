@@ -12,6 +12,7 @@ import plotly.plotly as py
 import json
 import numpy as np
 import pymongo
+from src.data_pipeline import query_avg, query_week
 
 server = Flask(__name__)
 
@@ -78,6 +79,13 @@ app.layout = html.Div(children=[
                 step=0.5,
                 marks={str(t): str(t) for t in np.arange(0.0,10.1,0.5)}
             )
+    ],
+        style={'margin-top': '25px', 'margin-bottom': '50px'}
+    ),
+    html.Div([
+        dcc.Graph(
+            id='table'
+        )
     ])
 ])
 
@@ -101,6 +109,27 @@ def update_graph(pos, complex_type, t, week):
     del complex_data['name']
     figure = go.Figure(complex_data)
     return figure
+
+@app.callback(
+    dash.dependencies.Output('table', 'figure'),
+    [dash.dependencies.Input('position', 'value'),
+     dash.dependencies.Input('t-slider', 'value'),
+     dash.dependencies.Input('week', 'value')])
+def update_table(pos, t, week):
+    if week == 'AVG':
+        df = query_avg(pos.upper())
+    else:
+        df = query_week(week, pos.upper())
+
+    trace = go.Table(
+        header=dict(values=list(df.columns[1:4])),
+        cells=dict(values=df.iloc[:,1:4].values.T)
+    )
+
+    figure = go.Figure([trace])
+
+    return figure
+
 
 if __name__ == '__main__':
     client = pymongo.MongoClient()
