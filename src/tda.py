@@ -290,28 +290,30 @@ def visualization_to_db(figure, name):
     COMPLEXES.insert_one(fig_json)
 
 if __name__ == '__main__':
+    positions = ['QB', 'RB', 'WR', 'TE', 'K', 'DEF', 'LB', 'DB', 'DL']
+    n_sets = [5, 12, 12, 11, 8, 7, 11, 7, 10]
+    
+    for n, pos in zip(n_sets, positions):
+        for week in range(1,18):
+            df = query_week(week=week, pos=pos)
+            names = list(df['name'].values)
+            X = df['weekpts'].values.reshape(-1,1)
+            agg = AgglomerativeClustering(n_clusters=n, linkage='ward')
+            labels = agg.fit_predict(X)
 
-    # Quarterbacks
-    for week in range(1,18):
-        df = query_week(week=week, pos='QB')
-        names = list(df['name'].values)
-        X = df['avg_points'].values.reshape(-1,1)
-        agg = AgglomerativeClustering(n_clusters=7, linkage='ward')
-        labels = agg.fit_predict(X)
+            stats = df.iloc[:,4:].values
 
-        stats = df.iloc[:,4:].values
+            scaler = StandardScaler()
+            scaled_stats = scaler.fit_transform(stats)
 
-        scaler = StandardScaler()
-        scaled_stats = scaler.fit_transform(stats)
+            cmapper = ClutchMapper()
+            cmapper.fit(scaled_stats, labels)
 
-        cmapper = ClutchMapper()
-        cmapper.fit(scaled_stats, labels)
+            for i in np.arange(0,10.1,0.5):
+                landmark_complex, observer_complex = cmapper.build_complex(i)
 
-        for i in np.arange(0,10.1,0.5):
-            landmark_complex, observer_complex = cmapper.build_complex(i)
+                landmark_fig = visualize_complex(landmark_complex,'{} Week {}: Landmark Complex at t={}'.format(pos, week, i))
+                observer_fig = visualize_complex(observer_complex, '{} Week {}: Observer Complex at t={}'.format(pos, week, i), names)
 
-            landmark_fig = visualize_complex(landmark_complex,'QB Week {}: Landmark Complex at t={}'.format(week, i))
-            observer_fig = visualize_complex(observer_complex, 'QB Week {}: Observer Complex at t={}'.format(week, i), names)
-
-            visualization_to_db(landmark_fig, 'qb_week_{}_landmark_complex_{}'.format(week, i))
-            visualization_to_db(observer_fig, 'qb_week_{}_observer_complex_{}'.format(week, i))
+                visualization_to_db(landmark_fig, '{}_week_{}_landmark_complex_{}'.format(pos.lower(), week, i))
+                visualization_to_db(observer_fig, '{}_week_{}_observer_complex_{}'.format(pos.lower(), week, i))
