@@ -117,7 +117,7 @@ of these filtrations and inspected the barcode diagrams.
 The barcode diagrams show when a connected component is "born" until the time it 
 "dies." So longer bars indicate that the component is more meaningful.
 
-### [Quarterbacks](notebooks/qb-landmark-observer.ipynb)
+#### [Quarterbacks](notebooks/qb-landmark-observer.ipynb)
 ###### Figure 1.
 ![alt text][qb_avg_dendrogram]
 
@@ -132,9 +132,7 @@ sets for my cover.
 ![alt text][qb_avg_barcode_landmark]
 ![alt text][qb_avg_barcode_observer]
 ###### Barcode diagrams for the two filtrations
-#### Insights
-
-### [Runningbacks](notebooks/rb-landmark-observer.ipynb)
+#### [Runningbacks](notebooks/rb-landmark-observer.ipynb)
 ###### Figure 1.
 ![alt text][rb_avg_dendrogram]
 
@@ -148,9 +146,7 @@ sets for my cover.
 ![alt text][rb_avg_barcode_landmark]
 ![alt text][rb_avg_barcode_observer]
 
-#### Insights
-
-### [Wide Receivers](notebooks/wr-landmark-observer.ipynb)
+#### [Wide Receivers](notebooks/wr-landmark-observer.ipynb)
 ###### Figure 4.
 ![alt text][wr_avg_dendrogram]
 
@@ -164,9 +160,7 @@ sets for my cover.
 ![alt text][wr_avg_barcode_landmark]
 ![alt text][wr_avg_barcode_observer]
 
-#### Insights
-
-### [Tight Ends](notebooks/te-landmark-observer.ipynb)
+#### [Tight Ends](notebooks/te-landmark-observer.ipynb)
 ###### Figure 7.
 ![alt text][te_avg_dendrogram]
 
@@ -180,9 +174,7 @@ sets for my cover.
 ![alt text][te_avg_barcode_landmark]
 ![alt text][te_avg_barcode_observer]
 
-#### Insights
-
-### [Kickers](notebooks/k-landmark-observer.ipynb)
+#### [Kickers](notebooks/k-landmark-observer.ipynb)
 ###### Figure 10.
 ![alt text][k_avg_dendrogram]
 
@@ -196,9 +188,7 @@ sets for my cover.
 ![alt text][k_avg_barcode_landmark]
 ![alt text][k_avg_barcode_observer]
 
-#### Insights
-
-### [Team Defenses and Special Teams](notebooks/def-landmark-observer.ipynb)
+#### [Team Defenses and Special Teams](notebooks/def-landmark-observer.ipynb)
 ###### Figure 13.
 ![alt text][def_avg_dendrogram]
 
@@ -212,9 +202,7 @@ sets for my cover.
 ![alt text][def_avg_barcode_landmark]
 ![alt text][def_avg_barcode_observer]
 
-#### Insights
-
-### [Linebackers](notebooks/lb-landmark-observer.ipynb)
+#### [Linebackers](notebooks/lb-landmark-observer.ipynb)
 ###### Figure 16.
 ![alt text][lb_avg_dendrogram]
 
@@ -228,9 +216,7 @@ sets for my cover.
 ![alt text][lb_avg_barcode_landmark]
 ![alt text][lb_avg_barcode_observer]
 
-#### Insights
-
-### [Defensive Backs](notebooks/db-landmark-observer.ipynb)
+#### [Defensive Backs](notebooks/db-landmark-observer.ipynb)
 ###### Figure 19.
 ![alt text][db_avg_dendrogram]
 
@@ -244,9 +230,7 @@ sets for my cover.
 ![alt text][db_avg_barcode_landmark]
 ![alt text][db_avg_barcode_observer]
 
-#### Insights
-
-### [Defensive Lineman](notebooks/dl-landmark-observer.ipynb)
+#### [Defensive Lineman](notebooks/dl-landmark-observer.ipynb)
 ###### Figure 22.
 ![alt text][dl_avg_dendrogram]
 
@@ -260,7 +244,13 @@ sets for my cover.
 ![alt text][dl_avg_barcode_landmark]
 ![alt text][dl_avg_barcode_observer]
 
-#### Insights
+### Weekly Data
+
+After deciding the number of sets I wanted in my covers of each position, I 
+created complexes for each position and inserted them into a MongoDB which would
+be accessible via my [web app]. The code for this is in the [tda.py] script.
+
+### Insights
 
 [RotoGuru]: http://rotoguru.net/
 [NFL Fantasy API]: http://api.fantasy.nfl.com/
@@ -302,3 +292,5 @@ sets for my cover.
 [dl_avg_cover]: plots/dl_avg_scatter.png "DL Average Scatterplot"
 [dl_avg_barcode_landmark]: plots/dl_avg_barcode_landmark.png "DL Average: Barcode Diagram for beta_0 of the Landmark Complex"
 [dl_avg_barcode_observer]: plots/dl_avg_barcode_observer.png "DL Average: Barcode Diagram for beta_0 of the Observer Complex"
+[web app]:(http://benedictaquino.com/mapping-the-clutch-gene)
+[tda.py]: (src/tda.py)
