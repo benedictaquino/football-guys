@@ -33,10 +33,6 @@ def projects():
 def mapping_the_clutch_gene():
     return render_template('mapping_the_clutch_gene.html')
 
-@server.route('/old_index')
-def old_index():
-    return render_template('old_index.html')
-
 app = dash.Dash(__name__, server=server)
 
 positions = ['QB', 'RB', 'WR', 'TE', 'DEF', 'K', 'LB', 'DB', 'DL']
