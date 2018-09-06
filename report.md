@@ -97,25 +97,42 @@ a team even in a deep 12-man league.
 For each position, I looked at ward linkage dendrograms to decide how many sets
 to include in my cover.
 
-Then, I normalized the full data set pulled back the cover from the 
+Then, I normalized the full data set and pulled back the cover from the 
 low-dimensional projection to the high-dimensional data. I constructed two 
 types of simplicial complexes utilizing the cover and data. First, I computed
 the centroid of each set in my cover and used these points as vertices in my 
-landmark complexes. Then, I used each data point in my data set as the vertices
-for my observer complexes. 
+observation complexes. Then, I used each data point in my data set as the 
+vertices for my landmark complexes. So players are landmarks and the centroids 
+of my cover were observations.
 
-For the landmark complexes, an edge (1-simplex) was constructed when there was 
-a player that was within the distance threshold of two centroids of my cover.
-A face was constructed when there was a player within three centroids.
+For the observation complex, a k-simplex was added when (k+1) distinct 
+observation points were visible to a common landmark. For the landmark complex,
+a k-simplex was added when (k+1) distinct landmark points were visible to a 
+common observation.
 
-For the observer complexes, edges and faces were constructed similarly.
+Visibility was defined by being within a certain distance threshold of another
+point.
+
+Since the goal of the project is to overcome issues with high-dimensional data,
+I computed 2-complexes. As well, creating and analyzing higher dimensional 
+complexes becomes computationaly expensive and the curse of dimensionality 
+resurfaces.
+
+The relevant code is located in the [tda.py] script.
 
 Then I constructed filtrations consisting of successive simplicial 2-complexes
 as the distance threshold was increased. Then I computed persistent homologies
 of these filtrations and inspected the barcode diagrams.
 
 The barcode diagrams show when a connected component is "born" until the time it 
-"dies." So longer bars indicate that the component is more meaningful.
+"dies." So longer bars indicate that the component lived longer through the 
+filtration and has might be more meaningful.
+
+After inspecting the barcode diagrams I also looked at the the simplicial 
+complexes at the key times when components were born and what the vertices were.
+The observation complexes could be used to collapse the initial clusters into 
+larger clusters, and the landmark complexes
+
 
 #### [Quarterbacks](notebooks/qb-landmark-observer.ipynb)
 ###### Figure 1.
@@ -132,6 +149,7 @@ sets for my cover.
 ![alt text][qb_avg_barcode_landmark]
 ![alt text][qb_avg_barcode_observer]
 ###### Barcode diagrams for the two filtrations
+
 #### [Runningbacks](notebooks/rb-landmark-observer.ipynb)
 ###### Figure 1.
 ![alt text][rb_avg_dendrogram]
