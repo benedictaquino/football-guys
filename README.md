@@ -70,3 +70,19 @@ structure of the complexes.
 - [PostgreSQL](https://www.postgresql.org/)
 - [MongoDB](https://www.mongodb.com/)
 - [Material Kit Bootstrap Template by Creative Tim](https://demos.creative-tim.com/material-kit/index.html)
+
+## Results
+
+I constructed a filtration for each position and week, as well as the overall 
+average by position, for a total of 6804 complexes. Initial inspection of the 
+complexes seems to group players nicely by their fantasy output, and they help
+indicate which initial clusters should be combined. 
+
+## Further Steps
+
+One tangential realization is that landmark-based navigation would be an 
+excellent tool for visualization of an unsupervised learning method such as SVD
+or NMF. Using discovered latent features as observations and the individual data 
+points as landmarks (or vice-versa) should yield interesting results and is 
+something I plan on tackling in the future.
+
