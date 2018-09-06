@@ -283,7 +283,7 @@ I embedded the Dash app in one of the pages in my Flask web app.
 
 I used a Bootstrap template by Creative Tim, [Material Kit] for my layout.
 
-### Insights
+## Insights
 
 Notice the barcode diagrams are exactly the same by position. This is expected,
 since the two complexes are equivalent representations of the data.
