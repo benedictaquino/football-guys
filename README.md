@@ -47,8 +47,6 @@ structure of the complexes.
 [filtrations]: https://en.wikipedia.org/wiki/Filtration_(mathematics)
 [persistent homologies]: https://en.wikipedia.org/wiki/Persistent_homology 
 
-
-
 ### [Technical Report](report.md)
 
 ### [Interactive Web App](http://benedictaquino.com/mapping-the-clutch-gene)
