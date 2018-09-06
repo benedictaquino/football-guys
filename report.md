@@ -8,7 +8,7 @@ script. The functions in data_pipeline.py scrape the data to pandas DataFrames,
 then using SQLAlchemy the data is inserted into Postgres. [Here] is the SQL 
 dump file. I primarily worked with the data from the [NFL Fantasy API].
 
-Table 1 describes the features I utilized throughout.
+Table 1 describes the features I utilized throughout my project.
 
 ##### Table 1.
 
@@ -251,6 +251,9 @@ created complexes for each position and inserted them into a MongoDB which would
 be accessible via my [web app]. The code for this is in the [tda.py] script.
 
 ### Insights
+
+Notice the barcode diagrams are exactly the same by position. This is expected,
+since the two complexes are equivalent representations of the data.
 
 [RotoGuru]: http://rotoguru.net/
 [NFL Fantasy API]: http://api.fantasy.nfl.com/
