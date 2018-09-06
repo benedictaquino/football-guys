@@ -19,10 +19,10 @@ high-dimensional, especially relative to the amount of observations.
 
 ## Topological Data Analysis
 
-The idea here is to map the data to a low-dimensional representation. Since I am
-looking at Fantasy Football data, I believe that the fantasy points of each 
-player is a good low-dimensional projection. It is easy to interpret as a 
-metric for a players performance, especially when looking at individual 
+The first step here is to map the data to a low-dimensional representation. 
+Since I am looking at Fantasy Football data, I believe that the fantasy points 
+of each player is a good low-dimensional projection. It is easy to interpret as 
+a metric for a players performance, especially when looking at individual 
 positions.
 
 From there, I began exploring the data on the players by position. For each 
@@ -32,7 +32,7 @@ the full high-dimensional data set (excluding the fantasy points themselves).
 In the low-dimensional data set, the sets in the cover are just 1-dimensional 
 intervals. In a two-dimensional space, sets of a cover would be 2-dimensional,
 and so on. Anything above three dimensions is difficult to visualize, so in 
-order to visualize my cover I lookg at the [nerve] of my cover.
+order to visualize my cover I look at the [nerve] of my cover.
 
 From there I utilized [landmark-based navigation]. I used the centroids of the 
 sets in my cover as my observers, and each data point representing each player 
