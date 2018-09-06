@@ -54,7 +54,7 @@ app.layout = html.Div(children=[
             dcc.RadioItems(
                 id='complex-type',
                 options=[{'label': i, 'value': i.lower()} for i in ['Landmark', 'Observer']],
-                value='observer',
+                value='landmark',
                 labelStyle={'display': 'inline-block'}
             )
         ],
