@@ -2,11 +2,13 @@
 
 The goal of this project is to utilize computational topology to understand the 
 structure of a high-dimensional data set in an effort to overcome the [curse of 
-dimensionality]. One of the obvious issues with high-dimensional data sets is 
-that it becomes difficult to visualize. I aim to use topological methods to 
-construct [simplicial complexes] that represent the data. Ideally, I will be 
-able to glean valuable insights about the data throughinspection of these 
-complexes.
+dimensionality]. The most obvious issue with high dimensionality is that 
+visualization becomes difficult. Another issue with high dimensionality is that 
+the concept of distance loses meaning as the number of dimensions grow, so 
+clustering becomes difficult. My goal was to construct simplicial complices that
+represented the data in order to tackle these problems.
+
+## Data
 
 I analyzed the 2017 Fantasy Football data that I sourced from the 
 [NFL Fantasy Football API](http://api.fantasy.nfl.com/). The data is fairly 
@@ -74,11 +76,22 @@ structure of the complexes.
 ## Results
 
 I constructed a filtration for each position and week, as well as the overall 
-average by position, for a total of 6804 complexes. Initial inspection of the 
-complexes seems to group players nicely by their fantasy output, and they help
-indicate which initial clusters should be combined. 
+average by position, for a total of 6804 complexes. The complexes appear to 
+refine the initial clustering of players by fantasy output. The barcode diagrams
+provide insight into how many "true" clusters there are. 
 
 ## Further Steps
+
+The next obvious step would be to implement code that utilizes the computed 
+persistent homologies to refine the initial clusters. 
+
+Another step would be to have my web app pull data weekly throughout the NFL 
+season to update the complexes with projections and actual points.
+
+Also, I did implement a parameter in the `ClutchMapper` class that allows one to
+use different distance metrics, when computing visibility, so experimenting with
+other metrics might yield interesting results. I used euclidean distance to 
+calculate visibility throughout my project.
 
 One tangential realization is that landmark-based navigation would be an 
 excellent tool for visualization of an unsupervised learning method such as SVD
