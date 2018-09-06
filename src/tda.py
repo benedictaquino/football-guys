@@ -271,7 +271,7 @@ def visualize_complex(simplicial_complex, title=None, names=None):
             y = y_edge,
             z = z_edge,
             mode = 'lines',
-            name = 'Edges',
+            name = 'Edges'
         ),
     ]
 
@@ -354,7 +354,7 @@ if __name__ == '__main__':
                 observer_complex, landmark_complex = cmapper.build_complex(i)
 
                 observer_fig = visualize_complex(observer_complex, '{} Week {}: Observer Complex at t={}'.format(pos, week, i))
-                landmark_fig = visualize_complex(landmark_complex,'{} Week {}: Landmark Complex at t={}'.format(pos, week, i), names)
+                landmark_fig = visualize_complex(landmark_complex, '{} Week {}: Landmark Complex at t={}'.format(pos, week, i), names)
 
                 visualization_to_db(observer_fig, '{}_week_{}_observer_complex_{}'.format(pos.lower(), week, i))
                 visualization_to_db(landmark_fig, '{}_week_{}_landmark_complex_{}'.format(pos.lower(), week, i))

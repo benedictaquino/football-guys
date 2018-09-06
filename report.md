@@ -241,8 +241,7 @@ sets for my cover.
 ![alt text][dl_avg_cover]
 
 ###### Figure 24.
-![alt text][dl_avg_barcode_landmark]
-![alt text][dl_avg_barcode_observer]
+![alt text][dl_avg_barcode_landmark]![alt text][dl_avg_barcode_observer]
 
 ### Weekly Data
 
