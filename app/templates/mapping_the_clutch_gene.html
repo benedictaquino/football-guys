@@ -8,7 +8,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8 ml-auto mr-auto">
-                <div class="brand">
+                <div class="title">
                     <h1>Mapping the Clutch Gene</h1>
                     <h3>Topological Data Analysis of NFL Players</h3>
                 </div>
@@ -16,12 +16,73 @@
         </div>
     </div>
 </div>
+
 <div class="main main-raised">
+    <div class="section">
+        <div class="container text-center">
+            <div class="row">
+                <div class="col-md-8 ml-auto mr-auto text-center">
+                    <h2>Project Description</h2>
+                    <h4>
+                        The goal of this project is to utilize computational 
+                        topology to understand the structure of a 
+                        high-dimensional data set in an effort to overcome the 
+                        curse of dimensionality. The most obvious issue with 
+                        high dimensionality is that visualization becomes 
+                        difficult. Another issue with high dimensionality is 
+                        that the concept of distance loses meaning as the number
+                         of dimensions grow, so clustering becomes difficult. 
+                         My goal was to construct simplicial complices that 
+                         represented the data in order to tackle these problems.
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="section section-basic">
-        <div class="container">
+            <div class="container text-center">
+                <div class="row">
+                    <div class="col-md-8 ml-auto mr-auto text-center">
+                        <h2>Dashboard</h2>
+                    </div>
+                </div>
+            </div>
             <center>
                 <iframe width="900" height="1200" frameborder="0" scrolling="no" src="{{ url_for('nfl_complex') }}"></iframe>
             </center>
+            <div class="container text-center">
+                <div class="row">
+                    <div class="col-md-8 ml-auto mr-auto text-center">
+                        <h5>
+                            The above dashboard can be used to visualize the
+                            various simplicial complexes constructed in my
+                            analysis.
+                        </h5>
+                        </br>
+                        <h2>Topological Data Analysis</h2>
+                        <h4>
+                            The first step here is to map the data to a low-dimensional representation. Since I am looking at Fantasy Football
+                            data, I believe that the fantasy points of each player is a good low-dimensional projection. It is easy to
+                            interpret as a metric for a players performance, especially when looking at individual positions.
+                            </br>
+                            </br>
+                            From there, I began exploring the data on the players by position. For each position, I grouped the players based
+                            on their fantasy points. These groups are create a cover of the data. Then, I take this cover and pull it back to
+                            the full high-dimensional data set (excluding the fantasy points themselves). In the low-dimensional data set, the
+                            sets in the cover are just 1-dimensional intervals. In a two-dimensional space, sets of a cover would be
+                            2-dimensional, and so on. Anything above three dimensions is difficult to visualize, so in order to visualize my
+                            cover I look at the nerve of my cover.
+                            </br>
+                            </br>
+                            Then I utilized landmark-based navigation. I used the centroids of
+                            the sets in my cover as my observers, and each data point representing each player as my landmarks. Visibility was
+                            the defined by a distance metric to each point. Then I from there I construct filtrations with varying levels of
+                            visibility. Then I computed their persistent homologies, which provide insight about the structure of the
+                            complexes.
+                        </h4>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
