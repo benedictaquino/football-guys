@@ -3,7 +3,7 @@
 ## Data
 
 I scraped the relevant data from [RotoGuru] and the [NFL Fantasy API] and stored
-it in a Postgres database. Details can be seen in the [data_pipeline.py] 
+it in a PostgreSQL database. Details can be seen in the [data_pipeline.py] 
 script. The functions in data_pipeline.py scrape the data to pandas DataFrames,
 then using SQLAlchemy the data is inserted into Postgres. [Here] is the SQL 
 dump file. I primarily worked with the data from the [NFL Fantasy API].
@@ -249,6 +249,22 @@ After deciding the number of sets I wanted in my covers of each position, I
 created complexes for each position and inserted them into a MongoDB which would
 be accessible via my [web app]. The code for this is in the [tda.py] script.
 
+## Visualization
+
+I used plotly to visualize the simplicial complexes. I exported the plotly 
+figures as json files and inserted them into a MongoDB database. The relevant 
+code is in [tda.py]. 
+
+## [Web App](http://benedictaquino.com/mapping-the-clutch-gene)
+
+I used Flask and Dash to create my web app. Dash was used to create an 
+interactive dashboard that allows one to explore the various simplicial 
+complexes and filtrations.
+
+I embedded the Dash app in one of the pages in my Flask web app.
+
+I used a Bootstrap template by Creative Tim, [Material Kit] for my layout.
+
 ### Insights
 
 Notice the barcode diagrams are exactly the same by position. This is expected,
@@ -296,3 +312,4 @@ since the two complexes are equivalent representations of the data.
 [dl_avg_barcode_observer]: plots/dl_avg_barcode_observer.png "DL Average: Barcode Diagram for beta_0 of the Observer Complex"
 [web app]:(http://benedictaquino.com/mapping-the-clutch-gene)
 [tda.py]: (src/tda.py)
+[Material Kit Bootstrap Template by Creative Tim]: (https://demos.creative-tim.com/material-kit/index.html)
