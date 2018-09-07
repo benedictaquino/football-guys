@@ -111,10 +111,7 @@ class FasterClutchMapper:
         for i in self.O_:
             for l in self.L_:
                 if visibility[i,l]== 1:
-                    if append_to_filtration:
-                        self.observer_filtration_.append(d.Simplex([i],p))
-                    else:
-                        observer_complex.append([i])
+                    self.observer_filtration_.append(d.Simplex([i],p))
                     break
 
         # 1-simplices (edges) are added when an two observations are visible to
@@ -122,10 +119,7 @@ class FasterClutchMapper:
         for i,j in combinations(self.O_, 2):
             for l in self.L_:
                 if visibility[i,l]+visibility[j,l] == 2:
-                    if append_to_filtration:
-                        self.observer_filtration_.append(d.Simplex([i,j],p))
-                    else:
-                        observer_complex.append([i,j])
+                    self.observer_filtration_.append(d.Simplex([i,j],p))
                     break
 
         # 2-simplices (faces) are added when three observations are visible to 
@@ -133,10 +127,7 @@ class FasterClutchMapper:
         for i,j,k in combinations(self.O_,3):
             for l in self.L_:
                 if visibility[i,l]+visibility[j,l]+visibility[k,l] == 3:
-                    if append_to_filtration:
-                        self.observer_filtration_.append(d.Simplex([i,j,k],p))
-                    else:
-                        observer_complex.append([i,j,k])
+                    self.observer_filtration_.append(d.Simplex([i,j,k],p))
                     break
 
         # # 3-simplices (tetrahedra) are added when four observations are 
@@ -147,11 +138,9 @@ class FasterClutchMapper:
         #             observer_complex.append([i,j,k,h])
         #             break
 
-        if append_to_filtration:
-            return
         return observer_complex
         
-    def build_landmark_complex(self, p, append_to_filtration=False):
+    def build_landmark_complex(self, p):
         '''
         This function constructs the simplices for a simplicial complex given a 
         cover, data, and a threshold of overlapping points
@@ -187,34 +176,22 @@ class FasterClutchMapper:
         for i in self.L_:
             for o in self.O_:
                 if visibility[o,i] == 1:
-                    if append_to_filtration:
-                        self.landmark_filtration.append(d.Simplex([i],p))
-                    else:
-                        landmark_complex.append([i])
-                    break
-
+                    self.landmark_filtration.append(d.Simplex([i],p))
 
         # 1-simplices (edges) are added when two landmarks are visible to an
         # observation
         for i,j in combinations(self.L_, 2):
             for o in self.O_:
                 if visibility[o,i]+visibility[o,j] == 2:
-                    if append_to_filtration:
-                        self.landmark_filtration_.append(d.Simplex([i,j],p))
-                    else:
-                        landmark_complex.append([i,j])
-                    break
+                    self.landmark_filtration_.append(d.Simplex([i,j],p))
 
         # 2-simplices (faces) are added when three landmarks are visible to an
         # observation
         for i,j,k in combinations(self.L_,3):
             for o in self.O_:
                 if visibility[o,i]+visibility[o,j]+visibility[o,k] == 3:
-                    if append_to_filtration:
-                        self.landmark_filtration_.append(d.Simplex([i,j,k], p))
-                    else:
-                        landmark_complex.append([i,j,k])
-                    break
+                    self.landmark_filtration_.append(d.Simplex([i,j,k], p))
+
 
         # # 3-simplices (tetrahedra) are added when four landmarks are visible 
         # # to an observation
@@ -224,8 +201,7 @@ class FasterClutchMapper:
         #             landmark_complex.append([i,j,k,h])
         #             break
 
-        if append_to_filtration:
-            return
+        return
 
         return landmark_complex
 
