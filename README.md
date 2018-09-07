@@ -81,7 +81,15 @@ provide insight into how many "true" clusters there are.
 ## Further Steps
 
 The next obvious step would be to implement code that utilizes the computed 
-persistent homologies to refine the initial clusters. 
+persistent homologies to refine the initial clusters. As well, using better 
+initial clusters may provide more interesting results.
+
+However, before utilizing the persistent homologies I would like to optimize my 
+code. There is definitely a bit of redundancy that can potentially be improved
+with recursion when building the complexes. As well, I attempted to implement
+multiprocessing and threading as seen in [makeitfaster.py], however due to an
+issue with being unable to pickle `dionysus.Filtration` objects I would have to
+rewrite significant portions of that code for it to function.
 
 Another step would be to have my web app pull data weekly throughout the NFL 
 season to update the complexes with projections and actual points.
@@ -97,3 +105,4 @@ or NMF. Using discovered latent features as observations and the individual data
 points as landmarks (or vice-versa) should yield interesting results and is 
 something I plan on tackling in the future.
 
+[makeitfaster.py]: src/makeitfaster.py
