@@ -341,7 +341,7 @@ if __name__ == '__main__':
     positions = ['QB', 'RB', 'WR', 'TE', 'K', 'DEF', 'LB', 'DB', 'DL']
     n_sets = [5, 12, 12, 11, 8, 7, 11, 7, 10]
 
-    df = query_week()
+    df = query_week(week=1, pos='WR')
     names = list(df['name'].values)
     X = df['weekpts'].values.reshape(-1,1)
     agg = AgglomerativeClustering(n_clusters=5, linkage='ward')

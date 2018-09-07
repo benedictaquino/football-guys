@@ -14,7 +14,7 @@ import plotly.figure_factory as FF
 import igraph as ig
 import pymongo
 import multiprocessing
-import threading
+from threading import Thread
 
 class FasterClutchMapper:
 
@@ -29,9 +29,6 @@ class FasterClutchMapper:
         nicely that way.
         '''
         self.metric = 'euclidean'
-        # Instantiate the filtration objects
-        self.observer_filtration_ = d.Filtration()
-        self.landmark_filtration_ = d.Filtration()
     
     def fit(self, data, labels):
         '''
@@ -52,6 +49,9 @@ class FasterClutchMapper:
         self.visibility_ = cdist(self.observers_, self.landmarks_, metric=self.metric)
 
         # Now we build the filtration!!! 
+        # Instantiate the filtrations as lists
+        self.observer_filtration_ = dict()
+        self.landmark_filtration_ = dict()
 
         # Set the end of the filtration to be the maximum visibility
         end = self.visibility_.max()
@@ -84,7 +84,7 @@ class FasterClutchMapper:
             radius = np.linalg.norm(centroid - cluster, axis=1).max()
             self.cover_[vertex] = (centroid, radius)
 
-        return self
+        return
 
     def _build_observer_complex(self, p):
         '''
@@ -109,14 +109,13 @@ class FasterClutchMapper:
         # Observation are the centroids of the cover we build 
         # k-simplices are collections of (k+1) distinct observations that have
         # some landmark in common
-        observer_complex = [] # instantiate complex as an empty list
 
         # 0-simplices (vertices) are added when an observation is visible
         # to a landmark
         for i in self.O_:
             for l in self.L_:
-                if visibility[i,l]== 1:
-                    self.observer_filtration_.append(d.Simplex([i],p))
+                if visibility[i,l]== 1 and i not in self.observer_filtration_:
+                    self.observer_filtration_.append(([i],p))
                     break
 
         # 1-simplices (edges) are added when an two observations are visible to
@@ -124,7 +123,8 @@ class FasterClutchMapper:
         for i,j in combinations(self.O_, 2):
             for l in self.L_:
                 if visibility[i,l]+visibility[j,l] == 2:
-                    self.observer_filtration_.append(d.Simplex([i,j],p))
+                    # print(i,j)
+                    self.observer_filtration_.append(([i,j],p))
                     break
 
         # 2-simplices (faces) are added when three observations are visible to 
@@ -132,7 +132,8 @@ class FasterClutchMapper:
         for i,j,k in combinations(self.O_,3):
             for l in self.L_:
                 if visibility[i,l]+visibility[j,l]+visibility[k,l] == 3:
-                    self.observer_filtration_.append(d.Simplex([i,j,k],p))
+                    # print(i,j,k)
+                    self.observer_filtration_.append(([i,j,k],p))
                     break
 
         # # 3-simplices (tetrahedra) are added when four observations are 
@@ -140,10 +141,10 @@ class FasterClutchMapper:
         # for i,j,k,h in combinations(self.O_,4):
         #     for l in self.L_:
         #         if visibility[i,l]+visibility[j,l]+visibility[k,l]+visibility[h,l] == 4:
-        #             self.observation_filtration_.append(d.Simplex([i,j,k,h],p))
+        #             self.observation_filtration_.append(([i,j,k,h],p))
         #             break
 
-        return
+        return self
         
     def _build_landmark_complex(self, p):
         '''
@@ -165,28 +166,27 @@ class FasterClutchMapper:
         # Landmarks are the data points of each player 
         # k-simplexes are collections of (k+1) distinct landmarks that have some
         # observation in common
-        landmark_complex = [] # instantiate complex as a list
 
         # 0-simplices (vertices) are added when a landmark is visible to an 
         # observation
         for i in self.L_:
             for o in self.O_:
                 if visibility[o,i] == 1:
-                    self.landmark_filtration_.append(d.Simplex([i],p))
+                    self.landmark_filtration_.append(([i],p))
 
         # 1-simplices (edges) are added when two landmarks are visible to an
         # observation
         for i,j in combinations(self.L_, 2):
             for o in self.O_:
                 if visibility[o,i]+visibility[o,j] == 2:
-                    self.landmark_filtration_.append(d.Simplex([i,j],p))
+                    self.landmark_filtration_.append(([i,j],p))
 
         # 2-simplices (faces) are added when three landmarks are visible to an
         # observation
         for i,j,k in combinations(self.L_,3):
             for o in self.O_:
                 if visibility[o,i]+visibility[o,j]+visibility[o,k] == 3:
-                    self.landmark_filtration_.append(d.Simplex([i,j,k], p))
+                    self.landmark_filtration_.append(([i,j,k], p))
 
 
         # # 3-simplices (tetrahedra) are added when four landmarks are visible 
@@ -194,7 +194,7 @@ class FasterClutchMapper:
         # for i,j,k,h in combinations(self.L_4):
         #     for o in self.O_:
         #         if visibility[o,i]+visibility[o,j]+visibility[o,k]+visibility[o,h] == 4:
-        #             self.landmark_filtration_.append(d.Simplex([i,j,k,h], p))
+        #             self.landmark_filtration_.append(([i,j,k,h], p))
         #             break
 
         return 
@@ -213,8 +213,8 @@ class FasterClutchMapper:
         '''
         threads = []
         
-        threads.append(Thread(target=self._build_observer_complex, args=(p,True)))
-        threads.append(Thread(target=self._build_landmark_complex, args=(p,True)))
+        threads.append(Thread(target=self._build_observer_complex, args=([p])))
+        threads.append(Thread(target=self._build_landmark_complex, args=([p])))
 
         for t in threads:
             t.start()
@@ -360,7 +360,7 @@ if __name__ == '__main__':
     positions = ['QB', 'RB', 'WR', 'TE', 'K', 'DEF', 'LB', 'DB', 'DL']
     n_sets = [5, 12, 12, 11, 8, 7, 11, 7, 10]
 
-    df = query_week()
+    df = query_week(week=1,pos='WR')
     names = list(df['name'].values)
     X = df['weekpts'].values.reshape(-1,1)
     agg = AgglomerativeClustering(n_clusters=5, linkage='ward')
@@ -371,9 +371,9 @@ if __name__ == '__main__':
     scaler = StandardScaler()
     scaled_stats = scaler.fit_transform(stats)
 
-    cmapper = FasterClutchMapper()
+    faster_cmapper = FasterClutchMapper()
     start = time()
-    cmapper.fit(scaled_stats, labels)
+    faster_cmapper.fit(scaled_stats, labels)
     end = time()
 
     print("Fitting FasterClutchMapper took {} seconds".format(end-start))

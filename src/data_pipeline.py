@@ -157,7 +157,7 @@ stat_names = list(map((lambda x: ''.join(c for c in x if (c.isalnum() or c == '_
 
 
 
-def query_avg(pos_string=''):
+def query_avg(pos='QB'):
     engine = create_engine("postgresql+psycopg2://football:isback@localhost/nfl")
     '''
     This function queries the database and returns a pandas DataFrame containing
@@ -166,7 +166,7 @@ def query_avg(pos_string=''):
 
     PARAMETERS
     ----------
-    pos_string: {str} to filter out certain positions, default returns all
+    pos: {str} to filter out certain positions, default returns QB
 
     RETURNS
     -------
@@ -240,7 +240,7 @@ def query_avg(pos_string=''):
     GROUP BY id, name, pos
     HAVING position = '{}'
     ORDER BY avg_points DESC;
-    '''.format(pos_string)
+    '''.format(pos)
 
     return pd.read_sql(q, engine)
 
