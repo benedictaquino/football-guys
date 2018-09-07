@@ -15,7 +15,6 @@ import igraph as ig
 import pymongo
 from sklearn.cluster import AgglomerativeClustering
 from sklearn.preprocessing import StandardScaler
-from src.data_pipeline import query_avg, query_week
 import multiprocessing
 import threading
 
@@ -23,8 +22,8 @@ class FasterClutchMapper:
 
     def __init__(self, metric='euclidean'):
         '''
-        The ClutchMapper object is am implementation of the Mapper algorithm
-        designed to work with NFL Fantasy data. 
+        The FasterClutchMapper object is am implementation of landmark-based
+        navigation designed to work with NFL Fantasy data. 
 
         Note: I named the observation complexes and related variables with the 
         'observer' prefix instead of 'observation' because 'observer' and 
@@ -53,6 +52,19 @@ class FasterClutchMapper:
         self.L_= range(len(self.landmarks_))
         self.visibility_ = cdist(self.observers_, self.landmarks_, metric=self.metric)
 
+        # Now we build the filtration!!! 
+
+        # Set the end of the filtration to be the maximum visibility
+        end = self.visibility_.max()
+        
+        # Create a multiprocessing pool
+        pool = multiprocessing.Pool(processes=multiprocessing.cpu_count())
+        p_range = np.linspace(0,end)
+
+        # Build iterative complexes and add simplices to filtration with the 
+        # visibility threshold they were born
+        pool.map(self._build_complexes_, p_range)
+
     def _build_cover(self):
         '''
         This method builds a cover for point cloud data made up of sets of 
@@ -75,10 +87,10 @@ class FasterClutchMapper:
 
         return self
 
-    def build_observation_complex(self, p, append_to_filtration=False):
+    def _build_observation_complex(self, p):
         '''
-        This function constructs the simplices for a simplicial complex given a 
-        cover, data, and a threshold of overlapping points
+        This method constructs the simplices for a the observation complex with 
+        the given visibility threshold and adds the simplices to the filtration
 
         PARAMETERS
         ----------
@@ -86,12 +98,6 @@ class FasterClutchMapper:
 
         # TODO: Implement this
         k_max: {int} specifify up to which dimension k-complex to calculate
-
-        append_to_filtration: {bool}
-
-        RETURNS
-        -------
-        landmark_complex: {list} a list of lists containing the simplices
         '''
         # Subtract the distances computed in the fit method from p to see which
         # observations and landmarks are visible to each other
@@ -135,28 +141,19 @@ class FasterClutchMapper:
         # for i,j,k,h in combinations(self.O_,4):
         #     for l in self.L_:
         #         if visibility[i,l]+visibility[j,l]+visibility[k,l]+visibility[h,l] == 4:
-        #             observer_complex.append([i,j,k,h])
+        #             self.observation_filtration_.append(d.Simplex([i,j,k,h],p))
         #             break
 
-        return observer_complex
+        return
         
-    def build_landmark_complex(self, p):
+    def _build_landmark_complex(self, p):
         '''
-        This function constructs the simplices for a simplicial complex given a 
-        cover, data, and a threshold of overlapping points
+        This method constructs the simplices for the landmark complex with the  
+        given visibility threshold and adds the simplices to the filtration
 
         PARAMETERS
         ----------
         p: {float} the visibility threshold to form simplices
-
-        # TODO: Implement this
-        k_max: {int} specifify up to which dimension k-complex to calculate
-
-        append_to_filtration: {bool} 
-
-        RETURNS
-        -------
-        landmark_complex: {list} a list of lists containing the simplices
         '''
         # Subtract the distances computed in the fit method from p to see which
         # observations and landmarks are visible to each other
@@ -176,7 +173,7 @@ class FasterClutchMapper:
         for i in self.L_:
             for o in self.O_:
                 if visibility[o,i] == 1:
-                    self.landmark_filtration.append(d.Simplex([i],p))
+                    self.landmark_filtration_.append(d.Simplex([i],p))
 
         # 1-simplices (edges) are added when two landmarks are visible to an
         # observation
@@ -198,14 +195,12 @@ class FasterClutchMapper:
         # for i,j,k,h in combinations(self.L_4):
         #     for o in self.O_:
         #         if visibility[o,i]+visibility[o,j]+visibility[o,k]+visibility[o,h] == 4:
-        #             landmark_complex.append([i,j,k,h])
+        #             self.landmark_filtration_.append(d.Simplex([i,j,k,h], p))
         #             break
 
-        return
+        return 
 
-        return landmark_complex
-
-    def _filtration_builder(self, p):
+    def _build_filtrations(self, p):
         '''
         This method calls the build_observation_complex and 
         build_landmark_complex methods to create the filtration
@@ -216,16 +211,11 @@ class FasterClutchMapper:
 
         # TODO: Implement this
         k_max: {int} specify up to which dimension k-complex to calculate
-
-        RETURNS
-        -------
-        observer_complex: {list} a list of lists containing the simplices
-        landmark_complex: {list} a list of lists containing the simplices
         '''
         threads = []
         
-        threads.append(Thread(target=self.build_observation_complex, args=(p,True)))
-        threads.append(Thread(target=self.build_landmark_complex, args(p,True)))
+        threads.append(Thread(target=self._build_observation_complex, args=(p,True)))
+        threads.append(Thread(target=self._build_landmark_complex, args(p,True)))
 
         for t in threads:
             t.start()
@@ -234,39 +224,6 @@ class FasterClutchMapper:
             t.join()
 
         return
-
-    def build_filtrations(self):
-        '''
-        This method constructs a filtration given a cover and the data
-        
-        RETURNS
-        -------
-        filtration {dionysus.Filtration} a filtration of simplicial complices
-        '''
-        # Set the end of the filtration to be the maximum visibility
-        end = self.visibility_.max()
-        
-        # Create a multiprocessing pool
-        pool = multiprocessing.Pool(processes=multiprocessing.cpu_count())
-        p_range = np.linspace(0,end)
-        pool.map(self._build_complexes, p_range)
-
-        # Build iterative complexes and add simplices to filtration with the 
-        # visibility threshold they were born
-        for p in np.linspace(0,end):
-            observer_complex, landmark_complex = self.build_complex(p)
-            
-        for simplex in observer_complex:
-            self.observer_filtration_.append(d.Simplex(simplex, p))
-
-        for simplex in landmark_complex:
-            self.landmark_filtration_.append(d.Simplex(simplex, p))
-
-        # Sort the filtrations
-        self.observer_filtration_.sort()
-        self.landmark_filtration_.sort()
-
-        return self.observer_filtration_, self.landmark_filtration_
 
 
 def visualize_complex(simplicial_complex, title=None, names=None):
@@ -396,6 +353,8 @@ def visualization_to_db(figure, name):
     COMPLEXES.insert_one(fig_json)
 
 if __name__ == '__main__':
+    from src.data_pipeline import query_avg, query_week
+
     positions = ['QB', 'RB', 'WR', 'TE', 'K', 'DEF', 'LB', 'DB', 'DL']
     n_sets = [5, 12, 12, 11, 8, 7, 11, 7, 10]
     

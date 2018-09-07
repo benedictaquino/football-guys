@@ -15,14 +15,13 @@ import igraph as ig
 import pymongo
 from sklearn.cluster import AgglomerativeClustering
 from sklearn.preprocessing import StandardScaler
-from src.data_pipeline import query_avg, query_week
 
 class ClutchMapper:
 
     def __init__(self, metric='euclidean'):
         '''
-        The ClutchMapper object is am implementation of the Mapper algorithm
-        designed to work with NFL Fantasy data. 
+        The ClutchMapper object is am implementation of landmark-based 
+        navigation designed to work with NFL Fantasy data. 
 
         Note: I named the observation complexes and related variables with the 
         'observer' prefix instead of 'observation' because 'observer' and 
@@ -335,6 +334,8 @@ def visualization_to_db(figure, name):
     COMPLEXES.insert_one(fig_json)
 
 if __name__ == '__main__':
+    from src.data_pipeline import query_avg, query_week
+
     positions = ['QB', 'RB', 'WR', 'TE', 'K', 'DEF', 'LB', 'DB', 'DL']
     n_sets = [5, 12, 12, 11, 8, 7, 11, 7, 10]
     
