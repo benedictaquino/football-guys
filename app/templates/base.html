@@ -2,7 +2,11 @@
 <html lang="en">
 
 <head>
+    {% if title %}
+    <title>{{ title }}</title>
+    {% else %}
     <title>Benedict Aquino</title>
+    {% endif %}
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />

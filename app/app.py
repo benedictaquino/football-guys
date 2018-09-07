@@ -27,17 +27,21 @@ def about():
 
 @server.route('/projects')
 def projects():
-    return render_template('projects.html')
-
-@server.route('/mapping-the-clutch-gene')
-def mapping_the_clutch_gene():
-    return render_template('mapping_the_clutch_gene.html')
-
-app = dash.Dash(__name__, server=server)
+    return render_template('projects.html',
+                           title="Projects")
 
 positions = ['QB', 'RB', 'WR', 'TE', 'DEF', 'K', 'LB', 'DB', 'DL']
 
-week = ['AVG'] + [i for i in range(1,18)]
+@server.route('/mapping-the-clutch-gene')
+def mapping_the_clutch_gene():
+    return render_template('mapping_the_clutch_gene.html',
+                           title="Mapping the Clutch Gene",
+                           positions=positions,
+                           weeks=list(range(1,18)))
+
+app = dash.Dash(__name__, server=server)
+
+weeks = ['AVG'] + list(range(1,18))
 
 app.layout = html.Div(children=[
     html.Div([
@@ -58,7 +62,7 @@ app.layout = html.Div(children=[
         html.Div([
             dcc.Dropdown(
                 id='week',
-                options=[{'label': i, 'value': i} for i in week],
+                options=[{'label': i, 'value': i} for i in weeks],
                 value=1)
         ],
         style={'width': '48%', 'float': 'right', 'display': 'inline-block'})
