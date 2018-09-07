@@ -95,6 +95,7 @@ def stat_scrape(week=1, year=2017):
     stats_df.fillna(0, inplace=True)
     stats_df.columns = stats_df.columns.map(int)
 
+    # Add columns for missing stats
     for i in range(1,94):
         if i not in stats_df.columns:
             stats_df[i] = np.zeros(stats_df.shape[0])

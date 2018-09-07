@@ -183,11 +183,15 @@ class ClutchMapper:
         -------
         filtration {dionysus.Filtration} a filtration of simplicial complices
         '''
+        # Instantiate the filtration objects
         self.observer_filtration_ = d.Filtration()
         self.landmark_filtration_ = d.Filtration()
 
+        # Set the end of the filtration to be the maximum visibility
         end = self.distances_.max()
-            
+        
+        # Build iterative complexes and add simplices to filtration with the 
+        # visibility threshold they were born
         for p in np.linspace(0,end):
             observer_complex, landmark_complex = self.build_complex(p)
             
@@ -197,6 +201,7 @@ class ClutchMapper:
             for simplex in landmark_complex:
                 self.landmark_filtration_.append(d.Simplex(simplex, p))
 
+        # Sort the filtrations
         self.observer_filtration_.sort()
         self.landmark_filtration_.sort()
 
