@@ -27,7 +27,8 @@ class FasterClutchMapper:
 
         Note: I named the observation complexes and related variables with the 
         'observer' prefix instead of 'observation' because 'observer' and 
-        'landmark' have the same character length.
+        'landmark' have the same character length. I like how they line up 
+        nicely that way.
         '''
         self.metric = 'euclidean'
         # Instantiate the filtration objects
@@ -87,7 +88,7 @@ class FasterClutchMapper:
 
         return self
 
-    def _build_observation_complex(self, p):
+    def _build_observer_complex(self, p):
         '''
         This method constructs the simplices for a the observation complex with 
         the given visibility threshold and adds the simplices to the filtration
@@ -214,7 +215,7 @@ class FasterClutchMapper:
         '''
         threads = []
         
-        threads.append(Thread(target=self._build_observation_complex, args=(p,True)))
+        threads.append(Thread(target=self._build_observer_complex, args=(p,True)))
         threads.append(Thread(target=self._build_landmark_complex, args(p,True)))
 
         for t in threads:
