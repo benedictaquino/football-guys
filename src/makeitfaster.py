@@ -13,8 +13,6 @@ import plotly.graph_objs as go
 import plotly.figure_factory as FF
 import igraph as ig
 import pymongo
-from sklearn.cluster import AgglomerativeClustering
-from sklearn.preprocessing import StandardScaler
 import multiprocessing
 import threading
 
@@ -64,7 +62,7 @@ class FasterClutchMapper:
 
         # Build iterative complexes and add simplices to filtration with the 
         # visibility threshold they were born
-        pool.map(self._build_complexes_, p_range)
+        pool.map(self._build_filtrations, p_range)
 
     def _build_cover(self):
         '''
@@ -216,7 +214,7 @@ class FasterClutchMapper:
         threads = []
         
         threads.append(Thread(target=self._build_observer_complex, args=(p,True)))
-        threads.append(Thread(target=self._build_landmark_complex, args(p,True)))
+        threads.append(Thread(target=self._build_landmark_complex, args=(p,True)))
 
         for t in threads:
             t.start()
@@ -355,32 +353,53 @@ def visualization_to_db(figure, name):
 
 if __name__ == '__main__':
     from src.data_pipeline import query_avg, query_week
+    from time import time
+    from sklearn.cluster import AgglomerativeClustering
+    from sklearn.preprocessing import StandardScaler
 
     positions = ['QB', 'RB', 'WR', 'TE', 'K', 'DEF', 'LB', 'DB', 'DL']
     n_sets = [5, 12, 12, 11, 8, 7, 11, 7, 10]
+
+    df = query_week()
+    names = list(df['name'].values)
+    X = df['weekpts'].values.reshape(-1,1)
+    agg = AgglomerativeClustering(n_clusters=5, linkage='ward')
+    labels = agg.fit_predict(X)
+
+    stats = df.iloc[:,4:].values
+
+    scaler = StandardScaler()
+    scaled_stats = scaler.fit_transform(stats)
+
+    cmapper = FasterClutchMapper()
+    start = time()
+    cmapper.fit(scaled_stats, labels)
+    end = time()
+
+    print("Fitting FasterClutchMapper took {} seconds".format(end-start))
     
-    for n, pos in zip(n_sets, positions):
-        for week in range(1,18):
-            df = query_week(week=week, pos=pos)
-            df = df.iloc[:100]
-            names = list(df['name'].values)
-            X = df['weekpts'].values.reshape(-1,1)
-            agg = AgglomerativeClustering(n_clusters=n, linkage='ward')
-            labels = agg.fit_predict(X)
+    # for n, pos in zip(n_sets, positions):
+    #     for week in range(1,18):
+    #         df = query_week(week=week, pos=pos)
+    #         df = df.iloc[:100]
+    #         names = list(df['name'].values)
+    #         X = df['weekpts'].values.reshape(-1,1)
+    #         agg = AgglomerativeClustering(n_clusters=n, linkage='ward')
+    #         labels = agg.fit_predict(X)
 
-            stats = df.iloc[:,4:].values
+    #         stats = df.iloc[:,4:].values
 
-            scaler = StandardScaler()
-            scaled_stats = scaler.fit_transform(stats)
+    #         scaler = StandardScaler()
+    #         scaled_stats = scaler.fit_transform(stats)
 
-            cmapper = ClutchMapper()
-            cmapper.fit(scaled_stats, labels)
+    #         cmapper = ClutchMapper()
+    #         cmapper.fit(scaled_stats, labels)
 
-            for i in np.arange(0,10.1,0.5):
-                observer_complex, landmark_complex = cmapper.build_complex(i)
+    #         for i in np.arange(0,10.1,0.5):
+    #             observer_complex, landmark_complex = cmapper.build_complex(i)
 
-                observer_fig = visualize_complex(observer_complex, '{} Week {}: Observer Complex at t={}'.format(pos, week, i))
-                landmark_fig = visualize_complex(landmark_complex, '{} Week {}: Landmark Complex at t={}'.format(pos, week, i), names)
+    #             observer_fig = visualize_complex(observer_complex, '{} Week {}: Observer Complex at t={}'.format(pos, week, i))
+    #             landmark_fig = visualize_complex(landmark_complex, '{} Week {}: Landmark Complex at t={}'.format(pos, week, i), names)
 
-                visualization_to_db(observer_fig, '{}_week_{}_observer_complex_{}'.format(pos.lower(), week, i))
-                visualization_to_db(landmark_fig, '{}_week_{}_landmark_complex_{}'.format(pos.lower(), week, i))
+    #             visualization_to_db(observer_fig, '{}_week_{}_observer_complex_{}'.format(pos.lower(), week, i))
+    #             visualization_to_db(landmark_fig, '{}_week_{}_landmark_complex_{}'.format(pos.lower(), week, i))
