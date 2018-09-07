@@ -27,9 +27,9 @@ positions.
 
 From there, I began exploring the data on the players by position. For each 
 position, I grouped the players based on their fantasy points. These groups
-are create a [cover] of the data. Then, I take this cover and pull it back to 
-the full high-dimensional data set (excluding the fantasy points themselves). 
-In the low-dimensional data set, the sets in the cover are just 1-dimensional 
+create a [cover] of the data. Then, I take this cover and pull it back to the
+full high-dimensional data set (excluding the fantasy points themselves). In the
+low-dimensional data set, the sets in the cover are just 1-dimensional 
 intervals. In a two-dimensional space, sets of a cover would be 2-dimensional,
 and so on. Anything above three dimensions is difficult to visualize, so in 
 order to visualize my cover I look at the [nerve] of my cover.
