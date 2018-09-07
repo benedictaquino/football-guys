@@ -58,5 +58,7 @@ for n, pos in zip(n_sets, positions):
         landmark_barcode_filepath="plots/week{}/{}_barcode_landmark.png".format(week,pos.lower())
         landmark_barcode.savefig(landmark_barcode_filepath)
         plt.close(landmark_barcode)
+        print("Saved {} to {}".format(landmark_barcode_title, landmark_barcode_filepath))
+
 
 
