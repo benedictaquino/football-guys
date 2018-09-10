@@ -88,7 +88,7 @@ class ClutchMapper:
         # Subtract the distances computed in the fit method from p to see which
         # observations and landmarks are visible to each other
         within_p = np.sign(p - self.distances_)
-        # If within_p[o,l] is -1, l is within p of o
+        # If within_p[o,l] is -1, l is more than p from o
         # If within_p[o,l] is 1, l is within p of o
 
         # Observers Complex

@@ -5,7 +5,7 @@ structure of a high-dimensional data set in an effort to overcome the [curse of
 dimensionality]. The most obvious issue with high dimensionality is that 
 visualization becomes difficult. Another issue with high dimensionality is that 
 the concept of distance loses meaning as the number of dimensions grow, so 
-clustering becomes difficult. My goal was to construct simplicial complices that
+clustering becomes difficult. My goal was to construct simplicial complexes that
 represented the data in order to tackle these problems.
 
 ## Data
@@ -37,8 +37,9 @@ order to visualize my cover I look at the [nerve] of my cover.
 From there I utilized [landmark-based navigation]. I used the centroids of the 
 sets in my cover as my observers, and each data point representing each player 
 as my landmarks. Visibility was the defined by a distance metric to each point. 
-Then I from there I construct [filtrations] with varying levels of visibility.
-Then I computed their [persistent homologies], which provide insight about the 
+Then from there I construct [filtrations] of simplicial complexes as the 
+required visibility threshold decreases. Then I computed the 
+[persistent homologies] of the filtrations, which provide insight about the 
 structure of the complexes.
 
 [cover]: https://en.wikipedia.org/wiki/Cover_(topology)
