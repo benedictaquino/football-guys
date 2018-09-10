@@ -73,10 +73,12 @@ structure of the complexes.
 
 ## Results
 
-I constructed a filtration for each position and week, as well as the overall 
-average by position, for a total of 6804 complexes. The complexes appear to 
-refine the initial clustering of players by fantasy output. The barcode diagrams
-provide insight into how many "true" clusters there are. 
+I constructed a landmark and observation filtration for each position and week,
+as well as the overall average by position. Each filtation had 50 simplicial 
+complexes, for a combined total of 16,200 complexes. I believe the persistent 
+homologies can be used to refine the initial clusters and decide which should 
+be combined. The barcode diagrams provide insight into how many "true" clusters 
+there are.
 
 ## Further Steps
 
