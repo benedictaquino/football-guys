@@ -50,8 +50,8 @@ class FasterClutchMapper:
 
         # Now we build the filtration!!! 
         # Instantiate the filtrations as lists
-        self.observer_filtration_ = dict()
-        self.landmark_filtration_ = dict()
+        self.observer_filtration_ = []
+        self.landmark_filtration_ = []
 
         # Set the end of the filtration to be the maximum visibility
         end = self.visibility_.max()
@@ -63,6 +63,9 @@ class FasterClutchMapper:
         # Build iterative complexes and add simplices to filtration with the 
         # visibility threshold they were born
         pool.map(self._build_filtrations, p_range)
+
+        for p in p_range:
+            self._build_filtrations(p)
 
     def _build_cover(self):
         '''
@@ -114,7 +117,7 @@ class FasterClutchMapper:
         # to a landmark
         for i in self.O_:
             for l in self.L_:
-                if visibility[i,l]== 1 and i not in self.observer_filtration_:
+                if visibility[i,l]== 1:
                     self.observer_filtration_.append(([i],p))
                     break
 
@@ -247,7 +250,6 @@ def visualize_complex(simplicial_complex, title=None, names=None):
     edge_list = [[simplex_dict[edge[0]], simplex_dict[edge[1]]] for edge in edges]
     faces = [simplex for simplex in simplicial_complex if len(simplex) == 3]
     face_list = [[simplex_dict[face[0]], simplex_dict[face[1]], simplex_dict[face[2]]] for face in faces]
-    # tetrahedra = [simplex for simplex in simplicial_complex if len(simplex) == 4]
 
     g = ig.Graph()
     g.add_vertices(vertices)
