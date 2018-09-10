@@ -267,6 +267,8 @@ After deciding the number of sets I wanted in my covers of each position, I
 created complexes for each position and inserted them into a MongoDB which would
 be accessible via my [web app]. The code for this is in the [tda.py] script.
 
+The plots for the weekly barcode diagrams can be found [here].
+
 ## Visualization
 
 I used plotly to visualize the simplicial complexes. I exported the plotly 
@@ -288,46 +290,50 @@ I used a Bootstrap template by Creative Tim, [Material Kit] for my layout.
 Notice the barcode diagrams are exactly the same by position. This is expected,
 since the two complexes are equivalent representations of the data.
 
+I believe the barcode diagrams and persistent homologies can be a good tool to 
+use to refine the initial clusters.
+
 [RotoGuru]: http://rotoguru.net/
 [NFL Fantasy API]: http://api.fantasy.nfl.com/
 [data_pipeline.py]: src/data_pipeline.py
 [Here]: data/nfl.sql
-[qb_avg_dendrogram]: plots/qb_avg_dendrogram.png "QB Average Dendrogram"
-[qb_avg_cover]: plots/qb_avg_scatter.png "QB Average Scatterplot"
-[qb_avg_barcode_landmark]: plots/qb_avg_barcode_landmark.png "QB Average: Barcode Diagram for beta_0 of the Landmark Complex"
-[qb_avg_barcode_observer]: plots/qb_avg_barcode_observer.png "QB Average: Barcode Diagram for beta_0 of the Observer Complex"
-[rb_avg_dendrogram]: plots/rb_avg_dendrogram.png "RB Average Dendrogram"
-[rb_avg_cover]: plots/rb_avg_scatter.png "RB Average Scatterplot"
-[rb_avg_barcode_landmark]: plots/rb_avg_barcode_landmark.png "RB Average: Barcode Diagram for beta_0 of the Landmark Complex"
-[rb_avg_barcode_observer]: plots/rb_avg_barcode_observer.png "RB Average: Barcode Diagram for beta_0 of the Observer Complex"
-[wr_avg_dendrogram]: plots/wr_avg_dendrogram.png "WR Average Dendrogram"
-[wr_avg_cover]: plots/wr_avg_scatter.png "WR Average Scatterplot"
-[wr_avg_barcode_landmark]: plots/wr_avg_barcode_landmark.png "WR Average: Barcode Diagram for beta_0 of the Landmark Complex"
-[wr_avg_barcode_observer]: plots/wr_avg_barcode_observer.png "WR Average: Barcode Diagram for beta_0 of the Observer Complex"
-[te_avg_dendrogram]: plots/te_avg_dendrogram.png "TE Average Dendrogram"
-[te_avg_cover]: plots/te_avg_scatter.png "TE Average Scatterplot"
-[te_avg_barcode_landmark]: plots/te_avg_barcode_landmark.png "TE Average: Barcode Diagram for beta_0 of the Landmark Complex"
-[te_avg_barcode_observer]: plots/te_avg_barcode_observer.png "TE Average: Barcode Diagram for beta_0 of the Observer Complex"
-[k_avg_dendrogram]: plots/k_avg_dendrogram.png "K Average Dendrogram"
-[k_avg_cover]: plots/k_avg_scatter.png "K Average Scatterplot"
-[k_avg_barcode_landmark]: plots/k_avg_barcode_landmark.png "K Average: Barcode Diagram for beta_0 of the Landmark Complex"
-[k_avg_barcode_observer]: plots/k_avg_barcode_observer.png "K Average: Barcode Diagram for beta_0 of the Observer Complex"
-[def_avg_dendrogram]: plots/def_avg_dendrogram.png "DEF Average Dendrogram"
-[def_avg_cover]: plots/def_avg_scatter.png "DEF Average Scatterplot"
-[def_avg_barcode_landmark]: plots/def_avg_barcode_landmark.png "DEF Average: Barcode Diagram for beta_0 of the Landmark Complex"
-[def_avg_barcode_observer]: plots/def_avg_barcode_observer.png "DEF Average: Barcode Diagram for beta_0 of the Observer Complex"
-[lb_avg_dendrogram]: plots/lb_avg_dendrogram.png "LB Average Dendrogram"
-[lb_avg_cover]: plots/lb_avg_scatter.png "LB Average Scatterplot"
-[lb_avg_barcode_landmark]: plots/lb_avg_barcode_landmark.png "LB Average: Barcode Diagram for beta_0 of the Landmark Complex"
-[lb_avg_barcode_observer]: plots/lb_avg_barcode_observer.png "LB Average: Barcode Diagram for beta_0 of the Observer Complex"
-[db_avg_dendrogram]: plots/db_avg_dendrogram.png "DB Average Dendrogram"
-[db_avg_cover]: plots/db_avg_scatter.png "DB Average Scatterplot"
-[db_avg_barcode_landmark]: plots/db_avg_barcode_landmark.png "DB Average: Barcode Diagram for beta_0 of the Landmark Complex"
-[db_avg_barcode_observer]: plots/db_avg_barcode_observer.png "DB Average: Barcode Diagram for beta_0 of the Observer Complex"
-[dl_avg_dendrogram]: plots/dl_avg_dendrogram.png "DL Average Dendrogram"
-[dl_avg_cover]: plots/dl_avg_scatter.png "DL Average Scatterplot"
-[dl_avg_barcode_landmark]: plots/dl_avg_barcode_landmark.png "DL Average: Barcode Diagram for beta_0 of the Landmark Complex"
-[dl_avg_barcode_observer]: plots/dl_avg_barcode_observer.png "DL Average: Barcode Diagram for beta_0 of the Observer Complex"
+[qb_avg_dendrogram]: plots/avg/qb_avg_dendrogram.png "QB Average Dendrogram"
+[qb_avg_cover]: plots/avg/qb_avg_scatter.png "QB Average Scatterplot"
+[qb_avg_barcode_landmark]: plots/avg/qb_avg_barcode_landmark.png "QB Average: Barcode Diagram for beta_0 of the Landmark Complex"
+[qb_avg_barcode_observer]: plots/avg/qb_avg_barcode_observer.png "QB Average: Barcode Diagram for beta_0 of the Observer Complex"
+[rb_avg_dendrogram]: plots/avg/rb_avg_dendrogram.png "RB Average Dendrogram"
+[rb_avg_cover]: plots/avg/rb_avg_scatter.png "RB Average Scatterplot"
+[rb_avg_barcode_landmark]: plots/avg/rb_avg_barcode_landmark.png "RB Average: Barcode Diagram for beta_0 of the Landmark Complex"
+[rb_avg_barcode_observer]: plots/avg/rb_avg_barcode_observer.png "RB Average: Barcode Diagram for beta_0 of the Observer Complex"
+[wr_avg_dendrogram]: plots/avg/wr_avg_dendrogram.png "WR Average Dendrogram"
+[wr_avg_cover]: plots/avg/wr_avg_scatter.png "WR Average Scatterplot"
+[wr_avg_barcode_landmark]: plots/avg/wr_avg_barcode_landmark.png "WR Average: Barcode Diagram for beta_0 of the Landmark Complex"
+[wr_avg_barcode_observer]: plots/avg/wr_avg_barcode_observer.png "WR Average: Barcode Diagram for beta_0 of the Observer Complex"
+[te_avg_dendrogram]: plots/avg/te_avg_dendrogram.png "TE Average Dendrogram"
+[te_avg_cover]: plots/avg/te_avg_scatter.png "TE Average Scatterplot"
+[te_avg_barcode_landmark]: plots/avg/te_avg_barcode_landmark.png "TE Average: Barcode Diagram for beta_0 of the Landmark Complex"
+[te_avg_barcode_observer]: plots/avg/te_avg_barcode_observer.png "TE Average: Barcode Diagram for beta_0 of the Observer Complex"
+[k_avg_dendrogram]: plots/avg/k_avg_dendrogram.png "K Average Dendrogram"
+[k_avg_cover]: plots/avg/k_avg_scatter.png "K Average Scatterplot"
+[k_avg_barcode_landmark]: plots/avg/k_avg_barcode_landmark.png "K Average: Barcode Diagram for beta_0 of the Landmark Complex"
+[k_avg_barcode_observer]: plots/avg/k_avg_barcode_observer.png "K Average: Barcode Diagram for beta_0 of the Observer Complex"
+[def_avg_dendrogram]: plots/avg/def_avg_dendrogram.png "DEF Average Dendrogram"
+[def_avg_cover]: plots/avg/def_avg_scatter.png "DEF Average Scatterplot"
+[def_avg_barcode_landmark]: plots/avg/def_avg_barcode_landmark.png "DEF Average: Barcode Diagram for beta_0 of the Landmark Complex"
+[def_avg_barcode_observer]: plots/avg/def_avg_barcode_observer.png "DEF Average: Barcode Diagram for beta_0 of the Observer Complex"
+[lb_avg_dendrogram]: plots/avg/lb_avg_dendrogram.png "LB Average Dendrogram"
+[lb_avg_cover]: plots/avg/lb_avg_scatter.png "LB Average Scatterplot"
+[lb_avg_barcode_landmark]: plots/avg/lb_avg_barcode_landmark.png "LB Average: Barcode Diagram for beta_0 of the Landmark Complex"
+[lb_avg_barcode_observer]: plots/avg/lb_avg_barcode_observer.png "LB Average: Barcode Diagram for beta_0 of the Observer Complex"
+[db_avg_dendrogram]: plots/avg/db_avg_dendrogram.png "DB Average Dendrogram"
+[db_avg_cover]: plots/avg/db_avg_scatter.png "DB Average Scatterplot"
+[db_avg_barcode_landmark]: plots/avg/db_avg_barcode_landmark.png "DB Average: Barcode Diagram for beta_0 of the Landmark Complex"
+[db_avg_barcode_observer]: plots/avg/db_avg_barcode_observer.png "DB Average: Barcode Diagram for beta_0 of the Observer Complex"
+[dl_avg_dendrogram]: plots/avg/dl_avg_dendrogram.png "DL Average Dendrogram"
+[dl_avg_cover]: plots/avg/dl_avg_scatter.png "DL Average Scatterplot"
+[dl_avg_barcode_landmark]: plots/avg/dl_avg_barcode_landmark.png "DL Average: Barcode Diagram for beta_0 of the Landmark Complex"
+[dl_avg_barcode_observer]: plots/avg/dl_avg_barcode_observer.png "DL Average: Barcode Diagram for beta_0 of the Observer Complex"
 [web app]:(http://benedictaquino.com/mapping-the-clutch-gene)
 [tda.py]: (src/tda.py)
-[Material Kit Bootstrap Template by Creative Tim]: (https://demos.creative-tim.com/material-kit/index.html)
+[here]: (plots)
+[Material Kit]: (https://demos.creative-tim.com/material-kit/index.html)
