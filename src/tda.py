@@ -91,9 +91,9 @@ class ClutchMapper:
         # If within_p[o,l] is -1, l is more than p from o
         # If within_p[o,l] is 1, l is within p of o
 
-        # Observers Complex
+        # Observation Complex
         # ----------------
-        # Observers are the centroids of the cover we build 
+        # Observation are the centroids of the cover we build 
         # k-simplices are collections of (k+1) distinct observations that have
         # some landmark in common
         observer_complex = [] # instantiate complex as an empty list
