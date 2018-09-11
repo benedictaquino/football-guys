@@ -58,7 +58,7 @@ app.layout = html.Div(children=[
                 labelStyle={'display': 'inline-block'}
             )
         ],
-        style={'width': '48%', 'float': 'left', 'display': 'inline-block'}),
+        style={'width': '48%', 'display': 'inline-block'}),
         html.Div([
             dcc.Dropdown(
                 id='week',
