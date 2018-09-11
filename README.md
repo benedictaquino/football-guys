@@ -78,7 +78,7 @@ structure of the complexes.
 
 I constructed a landmark and observation filtration for each position and week,
 as well as the overall average by position. Each filtation had 50 simplicial 
-complexes, for a combined total of 16,200 complexes. I believe the persistent 
+complexes, for a combined total of 17,100 complexes. I believe the persistent 
 homologies can be used to refine the initial clusters and decide which should 
 be combined. The barcode diagrams provide insight into how many "true" clusters 
 there are.
