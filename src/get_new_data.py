@@ -30,9 +30,11 @@ def get_2018_data(week):
     for n, pos in zip(n_sets, positions):
         if week < 18:
             df = query_week(week=week, year=2018, pos=pos)
+            df = df.iloc[:100]
             X = df['weekpts'].values.reshape(-1,1)
         else:
             df = query_avg(pos, year=2018)
+            df = df.iloc[:100]
             X = df['avg_points'].values.reshape(-1,1)
 
         names = list(df['name'].values)
@@ -55,6 +57,32 @@ def get_2018_data(week):
 
             visualization_to_db(observer_fig, '{}_week_1_observer_complex_{}_2018'.format(pos.lower(), i))
             visualization_to_db(landmark_fig, '{}_week_1_landmark_complex_{}_2018'.format(pos.lower(), i))
+
+        observer_f, landmark_f = cmapper.build_filtrations()
+
+        observer_ph = d.homology_persistence(observer_f)
+        landmark_ph = d.homology_persistence(landmark_f)
+
+        observer_dgms = d.init_diagrams(observer_ph, observer_f)
+        landmark_dgms = d.init_diagrams(landmark_ph, landmark_f)
+
+        observer_barcode = plt.figure(figsize=(15,10))
+        observer_barcode_title = "2018 {} Week 1: Barcode Diagram for $\\beta_0$ of the Observer Complex".format(pos)
+        plt.title(observer_barcode_title)
+        d.plot.plot_bars(observer_dgms[0])
+        observer_barcode_filepath="../plots/2018/week1/{}_barcode_observer.png".format(pos.lower())
+        observer_barcode.savefig(observer_barcode_filepath)
+        plt.close(observer_barcode)
+        print("Saved {} to {}".format(observer_barcode_title, observer_barcode_filepath))
+
+        landmark_barcode = plt.figure(figsize=(15,10))
+        landmark_barcode_title="2018 {} Week 1: Barcode Diagram for $\\beta_0$ of the Landmark Complex".format(pos)
+        plt.title(landmark_barcode_title)
+        d.plot.plot_bars(landmark_dgms[0])
+        landmark_barcode_filepath="../plots/2018/week1/{}_barcode_landmark.png".format(pos.lower())
+        landmark_barcode.savefig(landmark_barcode_filepath)
+        plt.close(landmark_barcode)
+        print("Saved {} to {}".format(landmark_barcode_title, landmark_barcode_filepath))
 
     print("Got data.")
 
