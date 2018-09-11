@@ -58,6 +58,8 @@ structure of the complexes.
     - [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
     - [pandas](https://pandas.pydata.org/)
     - [NumPy](http://www.numpy.org/)
+    - [SciPy](https://www.scipy.org/)
+    - [scikit-learn](http://scikit-learn.org/stable/)
     - [matplotlib](https://matplotlib.org/)
     - [seaborn](https://seaborn.pydata.org/)
     - [SQLAlchemy](https://www.sqlalchemy.org/)
