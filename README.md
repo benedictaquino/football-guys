@@ -36,11 +36,10 @@ order to visualize my cover I look at the [nerve] of my cover.
 
 From there I utilized [landmark-based navigation]. I used the centroids of the 
 sets in my cover as my observers, and each data point representing each player 
-as my landmarks. Visibility was the defined by a distance metric to each point. 
-Then from there I construct [filtrations] of simplicial complexes as the 
-required visibility threshold decreases. Then I computed the 
-[persistent homologies] of the filtrations, which provide insight about the 
-structure of the complexes.
+as my landmarks. Visibility was defined by a distance metric to each point. Then
+from there I construct [filtrations] of simplicial complexes as the required 
+visibility threshold decreases. Then I computed the [persistent homologies] of 
+the filtrations, which provide insight about the structure of the complexes.
 
 [cover]: https://en.wikipedia.org/wiki/Cover_(topology)
 [nerve]:  https://en.wikipedia.org/wiki/Nerve_of_a_covering
