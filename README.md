@@ -94,9 +94,6 @@ multiprocessing and threading as seen in [makeitfaster.py], however due to an
 issue with being unable to pickle `dionysus.Filtration` objects I would have to
 rewrite significant portions of that code for it to function.
 
-Another step would be to have my web app pull data weekly throughout the NFL 
-season to update the complexes with projections and actual points.
-
 Also, I did implement a parameter in the `ClutchMapper` class that allows one to
 use different distance metrics, when computing visibility, so experimenting with
 other metrics might yield interesting results. I used euclidean distance to 
