@@ -355,11 +355,7 @@ if __name__ == '__main__':
         scaled_stats = scaler.fit_transform(stats)
 
         cmapper = ClutchMapper()
-        start = time()
         cmapper.fit(scaled_stats, labels)
-        end = time()
-
-        print("Fitting ClutchMapper took {} seconds".format(end-start))
 
         for i in np.arange(0,10.1,0.5):
             observer_complex, landmark_complex = cmapper.build_complex(i)
@@ -369,6 +365,8 @@ if __name__ == '__main__':
 
             visualization_to_db(observer_fig, '{}_week_1_observer_complex_{}_2018'.format(pos.lower(), i))
             visualization_to_db(landmark_fig, '{}_week_1_landmark_complex_{}_2018'.format(pos.lower(), i))
+
+        print("Got {} data for 2018 week 1".format(pos))
 
     # for n, pos in zip(n_sets, positions):
         for week in range(1,18):
@@ -396,6 +394,7 @@ if __name__ == '__main__':
                 visualization_to_db(observer_fig, '{}_week_{}_observer_complex_{}_2017'.format(pos.lower(), week, i))
                 visualization_to_db(landmark_fig, '{}_week_{}_landmark_complex_{}_2017'.format(pos.lower(), week, i))
 
+            print("Got {} data for 2017 week {}".format(pos,week))
         df = query_avg(pos)
         df = df.iloc[:100]
         names = list(df['name'].values)
@@ -419,3 +418,5 @@ if __name__ == '__main__':
 
             visualization_to_db(observer_fig, '{}_avg_observer_complex_{}_2017'.format(pos.lower(), i))
             visualization_to_db(landmark_fig, '{}_avg_landmark_complex_{}_2017'.format(pos.lower(), i))
+
+        print("Got all {} complexes!".format(pos))
