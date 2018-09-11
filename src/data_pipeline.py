@@ -27,7 +27,7 @@ def rotoguru_scrape(week=1, year=2017):
                'scsv': 1
               }
     response = requests.get(url, payload)
-
+    
     if response.status_code != 200:
         return False
 
@@ -157,8 +157,7 @@ stat_names = list(map((lambda x: ''.join(c for c in x if (c.isalnum() or c == '_
 
 
 
-def query_avg(pos='QB'):
-    engine = create_engine("postgresql+psycopg2://football:isback@localhost/nfl")
+def query_avg(pos='QB', year=2017):
     '''
     This function queries the database and returns a pandas DataFrame containing
     the id, name, position, and weekly average fantasy points of the players by
@@ -173,6 +172,7 @@ def query_avg(pos='QB'):
     {pandas.DataFrame} a DataFrame containing the relevant data
 
     '''
+    engine = create_engine("postgresql+psycopg2://football:isback@localhost/nfl")
     q = '''
     SELECT id,
         name,
@@ -244,8 +244,7 @@ def query_avg(pos='QB'):
 
     return pd.read_sql(q, engine)
 
-def query_week(week=1, pos='QB'):
-    engine = create_engine("postgresql+psycopg2://football:isback@localhost/nfl")
+def query_week(week=1, year=2017, pos='QB'):
     '''
     This function queries the database and returns a pandas DataFrame containing
     the id, name, position, and stats for a given week
@@ -259,6 +258,7 @@ def query_week(week=1, pos='QB'):
     {pandas.DataFrame} a DataFrame containing the relevant data
 
     '''
+    engine = create_engine("postgresql+psycopg2://football:isback@localhost/nfl")
     q = '''
     SELECT id,
         name,
@@ -324,28 +324,35 @@ def query_week(week=1, pos='QB'):
         team_def_2_point_return
     FROM fantasy
     WHERE week = {}
+    AND year = {}
     AND position = '{}'
     ORDER BY weekpts DESC;
-    '''.format(week, pos)
+    '''.format(week, year, pos)
 
     return pd.read_sql(q, engine)
 
 if __name__ == '__main__':
-    for i in range(1,18):
-        dk_df = rotoguru_scrape(week=i)
+    # for i in range(1,18):
+    #     dk_df = rotoguru_scrape(week=i)
 
-        if type(dk_df) != pd.DataFrame:
-            print('Failed to retrieve DraftKings data for Week {}'.format(i))
-        else:
-            print('Successfully retrieved DraftKings data for Week {}'.format(i))
-            to_database(dk_df, table_name='draftkings')
+    #     if type(dk_df) != pd.DataFrame:
+    #         print('Failed to retrieve DraftKings data for Week {}'.format(i))
+    #     else:
+    #         print('Successfully retrieved DraftKings data for Week {}'.format(i))
+    #         to_database(dk_df, table_name='draftkings')
 
-        stat_df = stat_scrape(week=i)
+    #     stat_df = stat_scrape(week=i)
 
-        if type(stat_df) != pd.DataFrame:
-            print('Failed to retrieve fantasy stats for Week {}'.format(i))
-        else:
-            print('Successfully retrieved fantasy stats for Week {}'.format(i))
-            to_database(stat_df, table_name='fantasy')
+    #     if type(stat_df) != pd.DataFrame:
+    #         print('Failed to retrieve fantasy stats for Week {}'.format(i))
+    #     else:
+    #         print('Successfully retrieved fantasy stats for Week {}'.format(i))
+    #         to_database(stat_df, table_name='fantasy')
 
-        
+    stat_df = stat_scrape(week=1, year=2018)
+
+    if type(stat_df) != pd.DataFrame:
+        print("Failed to retrieve fantasy stats for Week 1 2018.")
+    else:
+        to_database(stat_df, table_name='fantasy')
+        print("Successfully retrieved fantasy stats for Week 1 2018.")        

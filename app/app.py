@@ -58,12 +58,19 @@ app.layout = html.Div(children=[
                 labelStyle={'display': 'inline-block'}
             )
         ],
-        style={'width': '48%', 'display': 'inline-block'}),
+        style={'width': '48%', 'float': 'left', 'display': 'inline-block'}),
         html.Div([
             dcc.Dropdown(
                 id='week',
                 options=[{'label': i, 'value': i} for i in weeks],
-                value=1)
+                value=1
+            ),
+            dcc.RadioItems(
+                id='year',
+                options=[{'label': i, 'value': i} for i in [2017, 2018]],
+                value=2018,
+                labelStyle={'display': 'inline-block'}
+            )
         ],
         style={'width': '48%', 'float': 'right', 'display': 'inline-block'})
     ]),
@@ -98,13 +105,15 @@ def nfl_complex():
     [dash.dependencies.Input('position', 'value'),
      dash.dependencies.Input('complex-type', 'value'),
      dash.dependencies.Input('t-slider', 'value'),
-     dash.dependencies.Input('week', 'value')])
-def update_graph(pos, complex_type, t, week):
+     dash.dependencies.Input('week', 'value'),
+     dash.dependencies.Input('year', 'value')]
+)
+def update_graph(pos, complex_type, t, week, year):
     if week == 'AVG':
         week = week.lower()
     else:
         week = 'week_{}'.format(week)
-    name = '{}_{}_{}_complex_{}'.format(pos, week, complex_type, float(t))
+    name = '{}_{}_{}_complex_{}_{}'.format(pos, week, complex_type, float(t), year)
     complex_data = COMPLEXES.find_one({'name': name})
     del complex_data['name']
     figure = go.Figure(complex_data)
@@ -114,12 +123,14 @@ def update_graph(pos, complex_type, t, week):
     dash.dependencies.Output('table', 'figure'),
     [dash.dependencies.Input('position', 'value'),
      dash.dependencies.Input('t-slider', 'value'),
-     dash.dependencies.Input('week', 'value')])
-def update_table(pos, t, week):
+     dash.dependencies.Input('week', 'value'),
+     dash.dependencies.Input('year', 'value')]
+)
+def update_table(pos, t, week, year):
     if week == 'AVG':
-        df = query_avg(pos.upper())
+        df = query_avg(pos=pos.upper(), year=year)
     else:
-        df = query_week(week, pos.upper())
+        df = query_week(week=week, year=year, pos=pos.upper())
 
     trace = go.Table(
         header=dict(values=list(df.columns[1:4])),
