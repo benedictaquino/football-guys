@@ -133,6 +133,34 @@ complexes at the key times when components were born and what the vertices were.
 The observation complexes could be used to collapse the initial clusters into 
 larger clusters, and the landmark complexes
 
+### Weekly Data
+
+After deciding the number of sets I wanted in my covers of each position, I 
+created complexes for each position and inserted them into a MongoDB which would
+be accessible via my [web app]. The code for this is in the [tda.py] script.
+
+The plots for the weekly barcode diagrams can be found [here].
+
+As well, I have a script that is currently scheduled to scrape the weekly data,
+clean it, and insert it into the relevant databases for use on the web app.
+Details can be found in the [get_new_data.py] script
+
+## Visualization
+
+I used plotly to visualize the simplicial complexes. I exported the plotly 
+figures as json files and inserted them into a MongoDB database using PyMongo. 
+The relevant code is in [tda.py]. 
+
+## [Web App](http://benedictaquino.com/mapping-the-clutch-gene)
+
+I used Flask and Dash to create my web app. Dash was used to create an 
+interactive dashboard that allows one to explore the various simplicial 
+complexes and filtrations.
+
+I embedded the Dash app in one of the pages in my Flask web app.
+
+I used a Bootstrap template by Creative Tim, [Material Kit] for my layout.
+
 
 #### [Quarterbacks](notebooks/qb-landmark-observer.ipynb)
 ###### Figure 1.
@@ -261,30 +289,6 @@ sets for my cover.
 ###### Figure 24.
 ![alt text][dl_avg_barcode_landmark]![alt text][dl_avg_barcode_observer]
 
-### Weekly Data
-
-After deciding the number of sets I wanted in my covers of each position, I 
-created complexes for each position and inserted them into a MongoDB which would
-be accessible via my [web app]. The code for this is in the [tda.py] script.
-
-The plots for the weekly barcode diagrams can be found [here].
-
-## Visualization
-
-I used plotly to visualize the simplicial complexes. I exported the plotly 
-figures as json files and inserted them into a MongoDB database. The relevant 
-code is in [tda.py]. 
-
-## [Web App](http://benedictaquino.com/mapping-the-clutch-gene)
-
-I used Flask and Dash to create my web app. Dash was used to create an 
-interactive dashboard that allows one to explore the various simplicial 
-complexes and filtrations.
-
-I embedded the Dash app in one of the pages in my Flask web app.
-
-I used a Bootstrap template by Creative Tim, [Material Kit] for my layout.
-
 ## Insights
 
 Notice the barcode diagrams are exactly the same by position. This is expected,
@@ -336,4 +340,5 @@ use to refine the initial clusters.
 [web app]:(http://benedictaquino.com/mapping-the-clutch-gene)
 [tda.py]: (src/tda.py)
 [here]: (plots)
+[get_new_data.py]: src/get_new_dat.py
 [Material Kit]: (https://demos.creative-tim.com/material-kit/index.html)
