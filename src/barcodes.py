@@ -62,7 +62,7 @@ n_sets = [5, 12, 12, 11, 8, 7, 11, 7, 10]
 
 
 for n, pos in zip(n_sets, positions):
-    df = query_week(week=week, pos=pos)
+    df = query_week(week=1, pos=pos)
     df = df.iloc[:100]
     names = list(df['name'].values)
     X = df['weekpts'].values.reshape(-1,1)
