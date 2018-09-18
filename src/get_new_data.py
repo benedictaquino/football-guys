@@ -6,6 +6,7 @@ if module_path not in sys.path:
 
 from sklearn.cluster import AgglomerativeClustering
 from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt
 
 from src.data_pipeline import *
 from src.tda import *
@@ -75,7 +76,7 @@ def get_2018_data(week):
         print("Saved {} to {}".format(observer_barcode_title, observer_barcode_filepath))
 
         landmark_barcode = plt.figure(figsize=(15,10))
-        landmark_barcode_title="2018 {} Week 1: Barcode Diagram for $\\beta_0$ of the Landmark Complex".format(pos)
+        landmark_barcode_title="2018 {} Week {}: Barcode Diagram for $\\beta_0$ of the Landmark Complex".format(pos, week)
         plt.title(landmark_barcode_title)
         d.plot.plot_bars(landmark_dgms[0])
         landmark_barcode_filepath="../plots/2018/week{}/{}_barcode_landmark.png".format(week,pos.lower())
@@ -100,6 +101,5 @@ def data_scheduler(week):
     s.run()
 
 if __name__ == "__main__":
-    get_2018_data(2)
     data_scheduler(week=3)
  
