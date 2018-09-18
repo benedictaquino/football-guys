@@ -4,7 +4,6 @@ module_path = os.path.abspath(os.path.join('..'))
 if module_path not in sys.path:
     sys.path.append(module_path)
 
-
 from sklearn.cluster import AgglomerativeClustering
 from sklearn.preprocessing import StandardScaler
 
@@ -55,8 +54,8 @@ def get_2018_data(week):
             observer_fig = visualize_complex(observer_complex, '2018 {} Week {}: Observer Complex at t={}'.format(pos, week, i))
             landmark_fig = visualize_complex(landmark_complex, '2018 {} Week {}: Landmark Complex at t={}'.format(pos, week, i), names)
 
-            visualization_to_db(observer_fig, '{}_week_1_observer_complex_{}_2018'.format(pos.lower(), i))
-            visualization_to_db(landmark_fig, '{}_week_1_landmark_complex_{}_2018'.format(pos.lower(), i))
+            visualization_to_db(observer_fig, '{}_week_{}_observer_complex_{}_2018'.format(pos.lower(), week, i))
+            visualization_to_db(landmark_fig, '{}_week_{}_landmark_complex_{}_2018'.format(pos.lower(), week, i))
 
         observer_f, landmark_f = cmapper.build_filtrations()
 
@@ -67,10 +66,10 @@ def get_2018_data(week):
         landmark_dgms = d.init_diagrams(landmark_ph, landmark_f)
 
         observer_barcode = plt.figure(figsize=(15,10))
-        observer_barcode_title = "2018 {} Week 1: Barcode Diagram for $\\beta_0$ of the Observer Complex".format(pos)
+        observer_barcode_title = "2018 {} Week {}: Barcode Diagram for $\\beta_0$ of the Observer Complex".format(pos, week)
         plt.title(observer_barcode_title)
         d.plot.plot_bars(observer_dgms[0])
-        observer_barcode_filepath="../plots/2018/week1/{}_barcode_observer.png".format(pos.lower())
+        observer_barcode_filepath="../plots/2018/week{}/{}_barcode_observer.png".format(week,pos.lower())
         observer_barcode.savefig(observer_barcode_filepath)
         plt.close(observer_barcode)
         print("Saved {} to {}".format(observer_barcode_title, observer_barcode_filepath))
@@ -79,7 +78,7 @@ def get_2018_data(week):
         landmark_barcode_title="2018 {} Week 1: Barcode Diagram for $\\beta_0$ of the Landmark Complex".format(pos)
         plt.title(landmark_barcode_title)
         d.plot.plot_bars(landmark_dgms[0])
-        landmark_barcode_filepath="../plots/2018/week1/{}_barcode_landmark.png".format(pos.lower())
+        landmark_barcode_filepath="../plots/2018/week{}/{}_barcode_landmark.png".format(week,pos.lower())
         landmark_barcode.savefig(landmark_barcode_filepath)
         plt.close(landmark_barcode)
         print("Saved {} to {}".format(landmark_barcode_title, landmark_barcode_filepath))
@@ -101,5 +100,6 @@ def data_scheduler(week):
     s.run()
 
 if __name__ == "__main__":
-    data_scheduler(week=2)
+    get_2018_data(2)
+    data_scheduler(week=3)
  
