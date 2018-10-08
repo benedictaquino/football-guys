@@ -335,8 +335,7 @@ def visualization_to_db(figure, name):
 if __name__ == '__main__':
     from sklearn.cluster import AgglomerativeClustering
     from sklearn.preprocessing import StandardScaler
-    from src.data_pipeline import query_avg, query_week
-    from time import time
+    from src.data_pipeline import engine, query_avg, query_week
 
     positions = ['QB', 'RB', 'WR', 'TE', 'K', 'DEF', 'LB', 'DB', 'DL']
     n_sets = [5, 12, 12, 11, 8, 7, 11, 7, 10]
@@ -360,11 +359,21 @@ if __name__ == '__main__':
         for i in np.arange(0,10.1,0.5):
             observer_complex, landmark_complex = cmapper.build_complex(i)
 
-            observer_fig = visualize_complex(observer_complex, '2018 {} Week 1: Observer Complex at t={}'.format(pos, i))
-            landmark_fig = visualize_complex(landmark_complex, '2018 {} Week 1: Landmark Complex at t={}'.format(pos, i), names)
+            observer_fig = visualize_complex(
+                               observer_complex,
+                               '2018 {} Week 1: Observer Complex at t={}'.\
+                                       format(pos, i)
+                               )
+            landmark_fig = visualize_complex(
+                               landmark_complex,
+                               '2018 {} Week 1: Landmark Complex at t={}'.\
+                                       format(pos, i), names
+                               )
 
-            visualization_to_db(observer_fig, '{}_week_1_observer_complex_{}_2018'.format(pos.lower(), i))
-            visualization_to_db(landmark_fig, '{}_week_1_landmark_complex_{}_2018'.format(pos.lower(), i))
+            visualization_to_db(observer_fig,
+                '{}_week_1_observer_complex_{}_2018'.format(pos.lower(), i))
+            visualization_to_db(landmark_fig,
+                '{}_week_1_landmark_complex_{}_2018'.format(pos.lower(), i))
 
         print("Got {} data for 2018 week 1".format(pos))
 
@@ -388,13 +397,26 @@ if __name__ == '__main__':
             for i in np.arange(0,10.1,0.5):
                 observer_complex, landmark_complex = cmapper.build_complex(i)
 
-                observer_fig = visualize_complex(observer_complex, '2017 {} Week {}: Observer Complex at t={}'.format(pos, week, i))
-                landmark_fig = visualize_complex(landmark_complex, '2017 {} Week {}: Landmark Complex at t={}'.format(pos, week, i), names)
+                observer_fig = visualize_complex(
+                                   observer_complex,
+                                   '2017 {} Week {}: Observer Complex at t={}'.\
+                                        format(pos, week, i)
+                                   )
+                landmark_fig = visualize_complex(
+                                   landmark_complex,
+                                   '2017 {} Week {}: Landmark Complex at t={}'.\
+                                        format(pos, week, i), names
+                                   )
 
-                visualization_to_db(observer_fig, '{}_week_{}_observer_complex_{}_2017'.format(pos.lower(), week, i))
-                visualization_to_db(landmark_fig, '{}_week_{}_landmark_complex_{}_2017'.format(pos.lower(), week, i))
+                visualization_to_db(observer_fig,
+                    '{}_week_{}_observer_complex_{}_2017'.\
+                            format(pos.lower(), week, i))
+                visualization_to_db(landmark_fig, 
+                    '{}_week_{}_landmark_complex_{}_2017'.\
+                            format(pos.lower(), week, i))
 
             print("Got {} data for 2017 week {}".format(pos,week))
+
         df = query_avg(pos)
         df = df.iloc[:100]
         names = list(df['name'].values)
@@ -413,10 +435,20 @@ if __name__ == '__main__':
         for i in np.arange(0,10.1,0.5):
             observer_complex, landmark_complex = cmapper.build_complex(i)
 
-            observer_fig = visualize_complex(observer_complex, '2017 {} AVG: Observer Complex at t={}'.format(pos, i))
-            landmark_fig = visualize_complex(landmark_complex, '2017 {} AVG: Landmark Complex at t={}'.format(pos, i), names)
+            observer_fig = visualize_complex(
+                               observer_complex,
+                               '2017 {} AVG: Observer Complex at t={}'.\
+                                   format(pos, i)
+                               )
+            landmark_fig = visualize_complex(
+                               landmark_complex,
+                               '2017 {} AVG: Landmark Complex at t={}'.\
+                                   format(pos, i), names
+                               )
 
-            visualization_to_db(observer_fig, '{}_avg_observer_complex_{}_2017'.format(pos.lower(), i))
-            visualization_to_db(landmark_fig, '{}_avg_landmark_complex_{}_2017'.format(pos.lower(), i))
+            visualization_to_db(observer_fig,
+                '{}_avg_observer_complex_{}_2017'.format(pos.lower(), i))
+            visualization_to_db(landmark_fig,
+                '{}_avg_landmark_complex_{}_2017'.format(pos.lower(), i))
 
         print("Got all {} complexes!".format(pos))

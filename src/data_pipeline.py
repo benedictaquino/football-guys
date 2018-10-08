@@ -1,3 +1,4 @@
+import os
 import requests
 from bs4 import BeautifulSoup
 import io
@@ -5,6 +6,11 @@ import pandas as pd
 import numpy as np
 import psycopg2
 from sqlalchemy import create_engine
+
+engine = create_engine("postgresql+psycopg2://{}:{}@{}/nfl"\
+            .format(os.environ['CLUTCH_USR'],
+                    os.environ['CLUTCH_PWD'],
+                    os.environ['AWS_RDS']))
 
 def rotoguru_scrape(week=1, year=2017):
     '''
@@ -126,7 +132,6 @@ def to_database(df, table_name):
     -------
     None
     '''
-    engine = create_engine("postgresql+psycopg2://football:isback@localhost/nfl")
     df.to_sql(table_name, engine, if_exists='append', index=False)
 
     return
@@ -172,7 +177,6 @@ def query_avg(pos='QB', year=2017):
     {pandas.DataFrame} a DataFrame containing the relevant data
 
     '''
-    engine = create_engine("postgresql+psycopg2://football:isback@localhost/nfl")
     q = '''
     SELECT id,
         name,
@@ -258,7 +262,6 @@ def query_week(week=1, year=2017, pos='QB'):
     {pandas.DataFrame} a DataFrame containing the relevant data
 
     '''
-    engine = create_engine("postgresql+psycopg2://football:isback@localhost/nfl")
     q = '''
     SELECT id,
         name,
@@ -332,22 +335,44 @@ def query_week(week=1, year=2017, pos='QB'):
     return pd.read_sql(q, engine)
 
 if __name__ == '__main__':
-    # for i in range(1,18):
-    #     dk_df = rotoguru_scrape(week=i)
+    # Instantiate psycopg2 connection to default db
+    conn = psycopg2.connect(host=os.environ['AWS_RDS'],
+                            port=5432, user=os.environ['MASTER_RDS_USERNAME'],
+                            password=os.environ['MASTER_RDS_PASSWORD'])
+    conn.autocommit = True
 
-    #     if type(dk_df) != pd.DataFrame:
-    #         print('Failed to retrieve DraftKings data for Week {}'.format(i))
-    #     else:
-    #         print('Successfully retrieved DraftKings data for Week {}'.format(i))
-    #         to_database(dk_df, table_name='draftkings')
+    c = conn.cursor() # instantiate cursor
 
-    #     stat_df = stat_scrape(week=i)
+    # Create database nfl
+    c.execute("CREATE DATABASE nfl;")
 
-    #     if type(stat_df) != pd.DataFrame:
-    #         print('Failed to retrieve fantasy stats for Week {}'.format(i))
-    #     else:
-    #         print('Successfully retrieved fantasy stats for Week {}'.format(i))
-    #         to_database(stat_df, table_name='fantasy')
+    # Write query to create user and make owner of nfl db
+    q = '''
+    CREATE USER {} ENCRYPTED PASSWORD '{}';
+
+    ALTER DATABASE nfl OWNER TO {};
+    '''.format(os.environ['CLUTCH_USR'],
+               os.environ['CLUTCH_PWD'],
+               os.environ['CLUTCH_USR'])
+
+    c.execute(q)
+
+    for i in range(1,18):
+        dk_df = rotoguru_scrape(week=i)
+
+        if type(dk_df) != pd.DataFrame:
+            print('Failed to retrieve DraftKings data for Week {}'.format(i))
+        else:
+            print('Successfully retrieved DraftKings data for Week {}'.format(i))
+            to_database(dk_df, table_name='draftkings')
+
+        stat_df = stat_scrape(week=i)
+
+        if type(stat_df) != pd.DataFrame:
+            print('Failed to retrieve fantasy stats for Week {}'.format(i))
+        else:
+            print('Successfully retrieved fantasy stats for Week {}'.format(i))
+            to_database(stat_df, table_name='fantasy')
 
     stat_df = stat_scrape(week=1, year=2018)
 
