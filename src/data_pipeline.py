@@ -339,12 +339,12 @@ if __name__ == '__main__':
     conn = psycopg2.connect(host=os.environ['AWS_RDS'],
                             port=5432, user=os.environ['MASTER_RDS_USERNAME'],
                             password=os.environ['MASTER_RDS_PASSWORD'])
-    conn.autocommit = True
+
+    conn.autocommit = True # set autocommit on
 
     c = conn.cursor() # instantiate cursor
 
-    # Create database nfl
-    c.execute("CREATE DATABASE nfl;")
+    c.execute("CREATE DATABASE nfl;") # create nfl database
 
     # Write query to create user and make owner of nfl db
     q = '''
@@ -355,8 +355,11 @@ if __name__ == '__main__':
                os.environ['CLUTCH_PWD'],
                os.environ['CLUTCH_USR'])
 
-    c.execute(q)
+    c.execute(q) # execute query
 
+    conn.close() # close connection
+
+    # Loop through weeks 1 through 17 and scrape relevant data
     for i in range(1,18):
         dk_df = rotoguru_scrape(week=i)
 
@@ -374,6 +377,7 @@ if __name__ == '__main__':
             print('Successfully retrieved fantasy stats for Week {}'.format(i))
             to_database(stat_df, table_name='fantasy')
 
+    # Get data for week 1 of 2018
     stat_df = stat_scrape(week=1, year=2018)
 
     if type(stat_df) != pd.DataFrame:
